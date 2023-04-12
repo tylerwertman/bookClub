@@ -12,8 +12,8 @@ module.exports= {
                 res.status(400).json({msg: "email exists"})
             }else {
                 const newUser = await User.create(req.body);
-                const userToken = jwt.sign({_id:newUser.id, email:newUser.email}, secret, {expiresIn: "1d"});
-                res.cookie("userToken", userToken, {httpOnly:true}).json({msg: "success!", user: newUser})
+                const userToken = jwt.sign({_id:newUser.id, email:newUser.email, firstName:newUser.firstName}, secret, {expiresIn: "1d"});
+                res.cookie("userToken", userToken, {httpOnly:false}).json({msg: "success!", user: newUser})
                 // console.log(userToken);
                 // res.json({msg: "success!", user: newUser})
             }
@@ -28,8 +28,8 @@ module.exports= {
             if (user){
                 const passwordMatch = await bcrypt.compare(req.body.password, user.password)
                 if(passwordMatch){
-                    const userToken = jwt.sign({_id:user.id, email:user.email}, secret, {expiresIn: "1d"});
-                    res.cookie("userToken", userToken, {httpOnly:true}).json({msg: "success!", user: user})
+                    const userToken = jwt.sign({_id:user.id, email:user.email, firstName:user.firstName}, secret, {expiresIn: "1d"});
+                    res.cookie("userToken", userToken, {httpOnly:false}).json({msg: "success!", user: user})
                 }else {
                     res.status(400).json({msg: "Invalid login attempt"})
                 }

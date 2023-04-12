@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Nav from './Nav'
 
 const LoginForm = (props) => {
-    const {loggedIn, setLoggedIn} = props
+    const {setLoggedIn} = props
 
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
@@ -29,7 +28,6 @@ const LoginForm = (props) => {
     }
     return (
         <div>
-            <Nav/>
             <div className="col-md-5 mx-auto mt-5">
                 <form onSubmit={submitHandler}>
                     <h3 className='mt-3'>Login</h3>

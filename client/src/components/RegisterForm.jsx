@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Nav from './Nav'
 
 const RegisterForm = (props) => {
-    const {loggedIn, setLoggedIn} = props
+    const {setLoggedIn} = props
 
     const navigate = useNavigate();
 
@@ -35,7 +34,6 @@ const RegisterForm = (props) => {
     }
     return (
         <div>
-            <Nav />
             <div className="col-md-5 mx-auto mt-5">
                 <form onSubmit={submitHandler}>
                     <h3>Register</h3>
