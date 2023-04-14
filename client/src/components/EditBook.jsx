@@ -49,7 +49,7 @@ const EditBook = () => {
         <div>
             <h1>Edit a Book</h1>
             <form action="" className='col-md-6 offset-3' onSubmit={editBook}>
-                {oneBook.title?.length<3 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
+                {oneBook.title?.length<2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
                 {errors.title ? <p className="text-danger">{errors.title.message}</p>: ""}
                 <div className="formgroup">
                     <label htmlFor="name">Book Name: </label>

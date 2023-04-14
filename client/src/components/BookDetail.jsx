@@ -9,14 +9,17 @@ const BookDetail = (props) => {
     const [oneBook, setOneBook] = useState({})
     const [favorites, setFavorites] = useState([])
     const [hideFav, setHideFav] = useState("btn btn-success")
-    const [hideUnfav, setHideUnfav] = useState("btn btn-warning hide")
+    const [hideUnfav, setHideUnfav] = useState("btn btn-warning")
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
         .then(res=>{
             setOneBook(res.data.book)
-            console.log(res.data.book)
+            setFavorites(res.data.book.favoritedBy)
+            console.log(res)
+            console.log(favorites)
         })
+        .then(console.log(oneBook))
         .catch(err=>console.log(err))
     
     }, []);
@@ -31,38 +34,38 @@ const BookDetail = (props) => {
     }
 
     const favoriteBook = () => {
-        axios.get(`http://localhost:8000/api/books/${id}`)
-        .then(res=>{
-            // console.log(res.data.book.favoritedBy)
-            setFavorites([...res.data.book.favoritedBy, user])
-            console.log(favorites)
-        })
-        .catch(err=>console.log(err))
+        if(!favorites.includes(user)){
+            setFavorites([...oneBook.favoritedBy, user])
+            
+            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: [...favorites, user]})
+            .then(res=>{
+                console.log(`Added ${user} to favs`)
+            })
+            .catch(err=>console.log(err))
+        }
 
-        axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-        .then(res=>{
-            // console.log(res.data.book)
-        })
-        .catch(err=>console.log(err))
-        setHideFav("hide")
-        setHideUnfav("btn btn-warning")
+        
+        // setHideFav("hide")
+        // setHideUnfav("btn btn-warning")
     }
-    const unfavoriteBook = () => {
-        axios.get(`http://localhost:8000/api/books/${id}`)
-        .then(res=>{
-            console.log(res.data.book.favoritedBy)
-            setFavorites([...res.data.book.favoritedBy])
-            console.log(favorites)
-        })
-        .catch(err=>console.log(err))
 
-        // axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: user})
-        // .then(res=>{
-        //     console.log(res.data.book)
-        // })
-        // .catch(err=>console.log(err))
-        setHideUnfav("hide")
-        setHideFav("btn btn-success")
+    const unfavoriteBook = () => {
+        if(favorites.includes(user)){
+            for (let i=0; i<favorites.length; i++){
+                if(favorites[i]===user){
+                    favorites.slice(i, -1)
+                    console.log(favorites)
+            }
+            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
+            .then(res=>{
+                console.log(`Removed ${user} from favs`)
+            })
+            .catch(err=>console.log(err))
+        }
+        }
+
+        // setHideUnfav("hide")
+        // setHideFav("btn btn-success")
     }
     return (
         <div>
@@ -71,16 +74,16 @@ const BookDetail = (props) => {
             <h3>Book Author: {oneBook.author}</h3>
             <h4>Added on: {new Date(oneBook.createdAt).toLocaleString()} by {oneBook.addedBy}</h4>
             <h4>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h4>
-            <h4>Favorited By: {oneBook.favoritedBy}</h4>
-            {/* {
-                favoritedBy.map((fav, index) => {
-                    return <span key={index}>{fav}, </span>
+            <h4>Favorited By:</h4>
+            {
+                favorites.map((fav, index) => {
+                    return <h4 key={index}>{fav} {{fav}===fav ? <button className={hideUnfav} onClick={unfavoriteBook}>Unfavorite Book</button> : null}</h4>
                 })
-            } */}
+            }
             <br/>
             <button className='btn btn-info' onClick={editBook}>Edit Book</button>&nbsp;
             <button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;
-            <button className={hideFav} onClick={favoriteBook}>Favorite Book</button>
+            <button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;
             <button className={hideUnfav} onClick={unfavoriteBook}>Unfavorite Book</button>
         </div>
         </div>

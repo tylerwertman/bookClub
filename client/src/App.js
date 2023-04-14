@@ -20,7 +20,8 @@ function App() {
 
   useEffect(() => {
     if(cookieValue){
-        setUser(jwtdecode(cookieValue).firstName)
+      console.log(jwtdecode(cookieValue))
+        setUser(jwtdecode(cookieValue).firstName + jwtdecode(cookieValue).lastName)
         setLoggedIn(true)
     }else{
       setUser("Guest")
@@ -45,7 +46,7 @@ function App() {
 
 export default App;
 
-
+// TO DO LIST
 // how to privatize /Dashboard
-// how to pull user into nav, added By
-// update book list on entry
+// how to pull user into added By
+// update book list on entry - probably a better way
