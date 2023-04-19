@@ -12,7 +12,9 @@ const BookSchema = new mongoose.Schema({
         minlength: [2, "Author must be at least 2 characters"]
     },
     addedBy: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Added-By field is required"]
     },
     favoritedBy: {
         type: Array
@@ -20,13 +22,5 @@ const BookSchema = new mongoose.Schema({
 },
     { timestamps: true }
 );
-
-BookSchema.virtual('createdAtFormatted').get(function () {
-    return this.createdAt.toLocaleString('en-US', { timeZone: 'UTC' });
-});
-
-BookSchema.virtual('updatedAtFormatted').get(function () {
-    return this.updatedAt.toLocaleString('en-US', { timeZone: 'UTC' });
-});
 
 module.exports = mongoose.model('Book', BookSchema);

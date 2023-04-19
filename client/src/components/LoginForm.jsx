@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const LoginForm = (props) => {
-    const {setLoggedIn} = props
 
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
@@ -20,9 +19,8 @@ const LoginForm = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/login', userInfo, {withCredentials: true})
         .then(res=>{
-            console.log(res);
+            // console.log(res);
             navigate('/dashboard')
-            setLoggedIn(true)
         })
         .catch(err=>console.log(err))
     }

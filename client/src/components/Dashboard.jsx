@@ -2,55 +2,59 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
+    const {username, userId} = props
+
     const navigate = useNavigate();
 
-    const [books, setBooks] = useState([])
-    const [book, setBook] = useState({title: "", author: "", addedBy: ""})
+    const [bookList, setBookList] = useState([])
+    const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
-            setBooks(res.data.book)
-            // console.log(res.data.book)
+            setBookList(res.data.book)
+            console.log(res.data)
         })
         .catch(err=>console.log(err))
     
+        navigate('/dashboard')
     }, []);
     
 
     const changeHandler = (e) => {
-        setBook({
-            ...book,
-            [e.target.name]: e.target.value
+        setOneBook({
+            ...oneBook,
+            [e.target.name]: e.target.value,
+            addedBy: userId
         })
     }
     const submitHandler = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/books', book)
+        axios.post('http://localhost:8000/api/books', oneBook)
         .then(res=>{
-            // console.log(res);
+            console.log(res.data.book);
             // navigate('/dashboard')
-            setBooks([...books, res.data.book])
-            console.log(books)
-            setBook({
+            setBookList([...bookList, res.data.book])
+            console.log(bookList)
+            setOneBook({
                 title: "",
-                author: "", 
-                addedBy: ""
+                author: ""
             })
             setErrors({
                 title: "",
                 author: ""
             })
-            navigate("/dashboard") //didn't work
+            navigate("/dashboard")
         })
         .catch(err=>{
-            console.log(err)
+            console.log(`submit errer`, err)
             setErrors({
                 title: err.response.data.error.errors.title,
                 author: err.response.data.error.errors.author
             })
+            console.log(errors)
         })
     }
     return (
@@ -61,17 +65,17 @@ const Dashboard = () => {
                 <div className="col-md-6" style={{display:'inline'}}>
                     <form className="col-md-6 offset-1" onSubmit={submitHandler}>
                         <h3>Add a new book</h3>
-                        {book.title && book.title?.length<2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
+                        {oneBook.title && oneBook.title?.length<2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p>: ""}
                         <div className="form-group">
                             <label className='form-label'>Title</label>
-                            <input type="text" className="form-control" name="title" value={book.title} onChange={changeHandler}/>
+                            <input type="text" className="form-control" name="title" value={oneBook.title} onChange={changeHandler}/>
                         </div>
-                        {book.author && book.author?.length<2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : ""}
+                        {oneBook.author && oneBook.author?.length<2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : ""}
                         {errors.author ? <p className="text-danger">{errors.author.message}</p>: ""}
                         <div className="form-group">
                             <label className='form-label'>Author</label>
-                            <input type="text" className="form-control" name="author" value={book.author} onChange={changeHandler}/>
+                            <input type="text" className="form-control" name="author" value={oneBook.author} onChange={changeHandler}/>
                         </div>
                         <div className="form-group">
                             <button type="submit" className='btn btn-primary mt-3'>Add Book</button>
@@ -81,12 +85,13 @@ const Dashboard = () => {
                 <div className="col-md-6" style={{display:'inline'}}>
                     <h3>All Books</h3>
                     {
-                        books.map((book, index) => {
+                        bookList.map((book, index) => {
                             return <div key={index}>
                             <Link to={`/books/${book._id}`}>{book.title}</Link>&nbsp;
-                            <p>(added by </p>
+                            <p>(added by {book?.addedBy?.firstName})</p>
                             </div>
                         })
+
                     }
                 </div>
             </div>

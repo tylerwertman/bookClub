@@ -28,7 +28,7 @@ module.exports= {
             if (user){
                 const passwordMatch = await bcrypt.compare(req.body.password, user.password)
                 if(passwordMatch){
-                    const userToken = jwt.sign({_id:user.id, email:user.email, firstName:user.firstName, lastName:user.lastName}, secret, {expiresIn: "1d"});
+                    const userToken = jwt.sign({_id:user.id, email:user.email, firstName:user.firstName, lastName:user.lastName, booksFavorited: user.booksFavorited}, secret, {expiresIn: "1d"});
                     res.cookie("userToken", userToken, {httpOnly:false}).json({msg: "success!", user: user})
                 }else {
                     res.status(400).json({msg: "Invalid login attempt"})
@@ -49,26 +49,28 @@ module.exports= {
 
 module.exports.findAllUsers = (req, res) => {
     User.find()
+    .populate("booksAdded")
     .then(allUsers => res.json({user: allUsers}))
-    .catch(err => res.status(400).json({message: "Something went worng", error: err}))
+    .catch(err => res.status(400).json({message: "Something went worng finding all users", error: err}))
 }
 module.exports.findOneUser = (req, res) => {
     User.findById(req.params.id)
+    .populate("booksAdded")
     .then(oneUser => res.json({user: oneUser}))
-    .catch(err => res.status(400).json({message: "Something went worng", error: err}))
+    .catch(err => res.status(400).json({message: "Something went worng finding a user", error: err}))
 }
 module.exports.createUser = (req, res) => {
     User.create(req.body)
     .then(newAuthor => res.json({user: newUser}))
-    .catch(err => res.status(400).json({message: "Something went worng", error: err}))
+    .catch(err => res.status(400).json({message: "Something went worng creating a user", error: err}))
 }
 module.exports.updateUser = (req, res) => {
     User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
     .then(updatedAuthor => res.json({user: updatedUser}))
-    .catch(err => res.status(400).json({message: "Something went worng", error: err}))
+    .catch(err => res.status(400).json({message: "Something went worng updating a user", error: err}))
 }
 module.exports.deleteUser = (req, res) => {
     User.findByIdAndDelete(req.params.id)
     .then(result => res.json({result: result}))
-    .catch(err => res.status(400).json({message: "Something went worng", error: err}))
+    .catch(err => res.status(400).json({message: "Something went worng deleting a user", error: err}))
 }

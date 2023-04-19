@@ -22,6 +22,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is required"],
         minlength: [8, "Password must be 8 characters or longer"]
+    },
+    booksAdded: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Book"
+    },
+    booksFavorited: {
+        type: []
     }
 }, { timestamps: true });
 
@@ -44,5 +51,4 @@ UserSchema.pre('save', function(next) {
         })
     })
 
-const User = mongoose.model("User", UserSchema)
-module.exports = User
+module.exports = mongoose.model("User", UserSchema)
