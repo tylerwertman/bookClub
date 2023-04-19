@@ -15,7 +15,7 @@ const Dashboard = (props) => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
             setBookList(res.data.book)
-            console.log(res.data)
+            // console.log(res.data)
         })
         .catch(err=>console.log(err))
     
