@@ -88,11 +88,14 @@ const BookDetail = (props) => {
                 <br/>
                 {/* <button className='btn btn-info' onClick={editBook}>Edit Book</button>&nbsp; */}
                 
-                <button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;
+                {
+                    (username === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;</> : null
+                }
+                
                 <button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;
                 <button className={hideUnfav} onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;
                 {
-                    (username === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <button className='btn btn-info' onClick={editBook}>Edit Book</button>: null
+                    (username === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-info' onClick={editBook}>Edit Book</button>&nbsp;</> : null
                 }
             </div>
         </div>
