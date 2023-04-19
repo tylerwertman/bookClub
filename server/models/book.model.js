@@ -16,9 +16,12 @@ const BookSchema = new mongoose.Schema({
         ref: "User",
         required: [true, "Added-By field is required"]
     },
+    // favoritedBy: {
+    //     type: [mongoose.Schema.Types.ObjectId],
+    //     ref: "User"
+    // }
     favoritedBy: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "User"
+        type: []
     }
 },
     { timestamps: true }

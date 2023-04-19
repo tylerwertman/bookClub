@@ -3,7 +3,7 @@ import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
 
 const BookDetail = (props) => {
-    const {username, userId, favs, setFavs} = props
+    const {username, userId} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
@@ -45,32 +45,30 @@ const BookDetail = (props) => {
 
     const favoriteBook = () => {
         // console.log(oneBook)
-        if(!favorites?.includes(username)){
-            favorites?.push(username)
+        if(!favorites.includes(username)){
             console.log(favorites)
+            favorites.push(username)
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
             .then(res=>console.log(`fav success`, oneBook))
-            .catch(err=>console.log(`fav put error`))
+            .catch(err=>console.log(`fav put error`, oneBook, favorites))
         }
         setHideFav("hide")
         setHideUnfav("btn btn-warning")
     }
 
     const unfavoriteBook = (deleteI) => {
-        
-        if(favorites?.includes(username)){
+        // if(favorites.includes(username)){
+            
             const filteredFavs = favorites.filter((list, i) => {
                 return i !== deleteI
             })
-            for (let i=0; i<favorites?.length; i++){
-                favorites?.pop()
-                console.log(`favorites after pop loop`, favorites)
-            }
-            favorites?.push(filteredFavs)
-            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
+            setFavorites(filteredFavs)
+            console.log(filteredFavs)
+
+            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
             .then(res=>console.log(`unfav success`, oneBook))
-            .catch(err=>console.log(`unfav put error`))
-        }
+            .catch(err=>console.log(`unfav put error`, oneBook, favorites))
+        // }
         setHideUnfav("hide")
         setHideFav("btn btn-success")
     }
@@ -130,12 +128,12 @@ const BookDetail = (props) => {
                 <h2>Book Title: {oneBook.title}</h2>
                 <h3>Book Author: {oneBook.author}</h3>
                 <h4>Added by: {oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</h4>
-                <h4>Added on: {new Date(oneBook.createdAt).toLocaleString()}</h4>
-                <h4>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h4>
+                <h6>Added on: {new Date(oneBook.createdAt).toLocaleString()}</h6>
+                <h6>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h6>
                 <h4>Favorited By:</h4>
                 {
-                    favorites?.favoritedBy?.map((fav, index) => {
-                        return <h4 key={index}>{favorites[index].firstName} </h4>
+                    favorites?.map((fav, index) => {
+                        return <h5 key={index}>{favorites[index]}<br/> </h5>
                     })
                 }
             </div>

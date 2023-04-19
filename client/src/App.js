@@ -18,13 +18,11 @@ function App() {
   const cookieValue = Cookies.get('userToken');
   const [username, setUsername] = useState("Guest")
   const [userId, setUserId] = useState()
-  const [favs, setFavs] = useState([])
 
   useEffect(() => {
     if(cookieValue){
       setUsername(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
       setUserId(jwtdecode(cookieValue)._id)
-      setFavs(jwtdecode(cookieValue).booksFavorited)
       // console.log(userId)
         // console.log(favs)
         setLoggedIn(true)
@@ -41,7 +39,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard username={username} userId={userId}/>}/>
         <Route path="/login" element={<LoginForm />}/>
         <Route path="/register" element={<RegisterForm />}/>
-        <Route path="/books/:id" element={<BookDetail username={username} favs={favs} setFavs={setFavs}/>}/>
+        <Route path="/books/:id" element={<BookDetail username={username}/>}/>
         <Route path="/users/:id" element={<UserDetail username={username} userId={userId}/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
         <Route path="*" element={<NotFound/>}/>
@@ -54,5 +52,4 @@ export default App;
 
 // TO DO LIST
 // how to privatize /Dashboard
-// how to pull user into added By
-// update book list on entry - probably a better way
+//unfavs

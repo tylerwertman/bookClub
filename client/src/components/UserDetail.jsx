@@ -7,7 +7,7 @@ const UserDetail = (props) => {
     const {username, userId} = props
 
     const [oneUser, setOneUser] = useState({})
-    const [favs, setFavs] = useState([])
+    // const [favs, setFavs] = useState([])
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
         .then(res=>{
