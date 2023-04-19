@@ -9,6 +9,7 @@ const LoginForm = (props) => {
         email: "",
         password: ""
     })
+    const [errors, setErrors] = useState({})
     const changeHandler = (e) => {
         setUserInfo({
             ...userInfo,
@@ -22,13 +23,21 @@ const LoginForm = (props) => {
             // console.log(res);
             navigate('/dashboard')
         })
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            console.log(`login errer`, err)
+            setErrors({
+                msg: err.response.data.msg
+            })
+            console.log(errors)
+        })
     }
     return (
         <div>
             <div className="col-md-5 mx-auto mt-5">
                 <form onSubmit={submitHandler}>
                     <h3 className='mt-3'>Login</h3>
+                    {errors.msg ? <p className="text-danger">{errors.msg}</p>: ""}
+
                     <div className="form-group">
                         <label className='form-label'>Email</label>
                         <input type="email" className="form-control" name="email" value={userInfo.email} onChange={changeHandler}/>
