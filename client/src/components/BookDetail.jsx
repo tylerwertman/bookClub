@@ -3,7 +3,7 @@ import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
 
 const BookDetail = (props) => {
-    const {username, userid, favs, setFavs} = props
+    const {username, userId, favs, setFavs} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
@@ -16,6 +16,12 @@ const BookDetail = (props) => {
         .then(res=>{
             setOneBook(res.data.book)
             setFavorites(res.data.book.favoritedBy)
+            console.log(`booksFavorited res`, res.data.book)
+            console.log(`favorites array`, favorites)
+            if(res.data.book.favoritedBy.includes(userId)){
+                setHideFav(`btn btn-success hide`)
+                setHideUnfav(`btn btn-warning`)
+            }
             // setFavorites(res.data.book.favoritedBy)
             // console.log(res.data.book.addedBy)
             // console.log(res.data.book)
@@ -39,34 +45,70 @@ const BookDetail = (props) => {
 
     const favoriteBook = () => {
         // console.log(oneBook)
-        if(!favorites.includes(username)){
-            favorites.push(username)
+        if(!favorites?.includes(username)){
+            favorites?.push(username)
+            console.log(favorites)
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-            .then(res=>console.log(`fav success`))
+            .then(res=>console.log(`fav success`, oneBook))
             .catch(err=>console.log(`fav put error`))
         }
-        console.log(oneBook)
         setHideFav("hide")
         setHideUnfav("btn btn-warning")
     }
 
     const unfavoriteBook = (deleteI) => {
-        for (let i=0; i<favorites.length; i++){
-            favorites.pop()
-        }
-        if(favorites.includes(username)){
+        
+        if(favorites?.includes(username)){
             const filteredFavs = favorites.filter((list, i) => {
                 return i !== deleteI
             })
-            favorites.push(filteredFavs)
-            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-            .then(res=>console.log(`unfav success`))
+            for (let i=0; i<favorites?.length; i++){
+                favorites?.pop()
+                console.log(`favorites after pop loop`, favorites)
+            }
+            favorites?.push(filteredFavs)
+            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
+            .then(res=>console.log(`unfav success`, oneBook))
             .catch(err=>console.log(`unfav put error`))
         }
-        console.log(oneBook)
         setHideUnfav("hide")
         setHideFav("btn btn-success")
     }
+
+    // Newer, broken fav unfav
+
+    // const favoriteBook = () => {
+    //     // console.log(oneBook)
+    //     if(!favorites?.includes(username)){
+    //         console.log(`inside fav IF`, oneBook)
+    //         favorites?.push(username)
+    //         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
+    //         .then(res=>console.log(`fav success`))
+    //         .catch(err=>console.log(`fav put error`))
+    //     }
+    //     // console.log(oneBook)
+    //     setHideFav("hide")
+    //     setHideUnfav("btn btn-warning")
+    // }
+
+    // const unfavoriteBook = (deleteI) => {
+    //     for (let i=0; i<favorites?.length; i++){
+    //         favorites.pop()
+    //     }
+    //     if(!favorites?.includes(username)){
+    //         console.log(`inside unfav if`, oneBook)
+    //         const filteredFavs = favorites?.filter((list, i) => {
+    //             return i !== deleteI
+    //         })
+    //         favorites?.push(filteredFavs)
+    //         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
+    //         .then(res=>console.log(`unfav success`))
+    //         .catch(err=>console.log(`unfav put error`))
+    //     }
+    //     // console.log(oneBook)
+    //     setHideUnfav("hide")
+    //     setHideFav("btn btn-success")
+    // }
 
     return (
         <div>
@@ -92,8 +134,8 @@ const BookDetail = (props) => {
                 <h4>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h4>
                 <h4>Favorited By:</h4>
                 {
-                    favorites.map((fav, index) => {
-                        return <h4 key={index}>{favorites[index]} </h4>
+                    favorites?.favoritedBy?.map((fav, index) => {
+                        return <h4 key={index}>{favorites[index].firstName} </h4>
                     })
                 }
             </div>

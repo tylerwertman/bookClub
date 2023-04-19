@@ -15,7 +15,7 @@ const Dashboard = (props) => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
             setBookList(res.data.book)
-            // console.log(res.data)
+            console.log(`booklist`, res.data.book)
         })
         .catch(err=>console.log(err))
     
@@ -37,6 +37,7 @@ const Dashboard = (props) => {
             console.log(res.data.book);
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
+            navigate("/dashboard")
             console.log(bookList)
             setOneBook({
                 title: "",
@@ -46,7 +47,6 @@ const Dashboard = (props) => {
                 title: "",
                 author: ""
             })
-            navigate("/dashboard")
         })
         .catch(err=>{
             console.log(`submit errer`, err)
@@ -88,7 +88,7 @@ const Dashboard = (props) => {
                         bookList.map((book, index) => {
                             return <div key={index}>
                             <Link to={`/books/${book._id}`}>{book.title}</Link>&nbsp;
-                            <p>(added by {book?.addedBy?.firstName})</p>
+                            <p>(added by <Link to={`/users/${userId}`}>{book?.addedBy?.firstName}</Link>)</p>
                             </div>
                         })
 

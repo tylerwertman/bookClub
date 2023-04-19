@@ -17,7 +17,8 @@ const BookSchema = new mongoose.Schema({
         required: [true, "Added-By field is required"]
     },
     favoritedBy: {
-        type: Array
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User"
     }
 },
     { timestamps: true }

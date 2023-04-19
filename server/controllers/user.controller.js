@@ -50,12 +50,14 @@ module.exports= {
 module.exports.findAllUsers = (req, res) => {
     User.find()
     .populate("booksAdded")
+    .populate("booksFavorited")
     .then(allUsers => res.json({user: allUsers}))
     .catch(err => res.status(400).json({message: "Something went worng finding all users", error: err}))
 }
 module.exports.findOneUser = (req, res) => {
     User.findById(req.params.id)
     .populate("booksAdded")
+    .populate("booksFavorited")
     .then(oneUser => res.json({user: oneUser}))
     .catch(err => res.status(400).json({message: "Something went worng finding a user", error: err}))
 }

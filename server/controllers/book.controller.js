@@ -4,12 +4,14 @@ const User = require("../models/user.model")
 module.exports.findAllBooks = (req, res) => {
     Book.find()
         .populate("addedBy")
+        .populate("favoritedBy")
         .then(allBooks => res.json({ book: allBooks }))
         .catch(err => res.status(400).json({ message: "Something went worng finding all books", error: err }))
 }
 module.exports.findOneBook = (req, res) => {
     Book.findById(req.params.id)
-    .populate("addedBy")
+        .populate("addedBy")
+        .populate("favoritedBy")
         .then(oneBook => res.json({ book: oneBook }))
         .catch(err => res.status(400).json({ message: "Something went worng finding one book", error: err }))
 }
@@ -25,6 +27,7 @@ module.exports.createBook = (req, res) => {
 }
 module.exports.updateBook = (req, res) => {
     Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        // .populate("favoritedBy")
         .then(updatedBook => res.json({ book: updatedBook }))
         .catch(err => res.status(400).json({ message: "Something went worng updating a book", error: err }))
 }

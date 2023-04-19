@@ -42,7 +42,7 @@ function App() {
         <Route path="/login" element={<LoginForm />}/>
         <Route path="/register" element={<RegisterForm />}/>
         <Route path="/books/:id" element={<BookDetail username={username} favs={favs} setFavs={setFavs}/>}/>
-        <Route path="/users/:id" element={<UserDetail/>}/>
+        <Route path="/users/:id" element={<UserDetail username={username} userId={userId}/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
