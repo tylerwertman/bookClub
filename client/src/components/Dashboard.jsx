@@ -11,6 +11,17 @@ const Dashboard = (props) => {
     const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
 
+
+
+                                    // TO DO LIST
+                                    
+                                    // privatize /Dashboard
+                                    // unfavs
+                                    // added by live update
+                                    // on login, live update nav username
+
+
+
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
@@ -88,7 +99,7 @@ const Dashboard = (props) => {
                         bookList.map((book, index) => {
                             return <div key={index}>
                             <Link to={`/books/${book._id}`}>{book.title}</Link>&nbsp;
-                            <p>(added by <Link to={`/users/${userId}`}>{book?.addedBy?.firstName}</Link>)</p>
+                            <p>(added by <Link to={`/users/${userId}`}>{book.addedBy.firstName}</Link>)</p>
                             </div>
                         })
 

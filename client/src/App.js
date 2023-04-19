@@ -49,7 +49,3 @@ function App() {
 }
 
 export default App;
-
-// TO DO LIST
-// how to privatize /Dashboard
-//unfavs
