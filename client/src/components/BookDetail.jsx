@@ -8,20 +8,19 @@ const BookDetail = (props) => {
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
     const [favorites, setFavorites] = useState([])
-    const [hideFav, setHideFav] = useState("btn btn-success")
-    const [hideUnfav, setHideUnfav] = useState("btn btn-warning hide")
+    const [filteredFavs, setFilteredFavs] = useState([])
+    const hideFav = "btn btn-success"
+    const hideUnfav = "btn btn-warning"
+
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
         .then(res=>{
             setOneBook(res.data.book)
-            setFavorites(res.data.book.favoritedBy)
-            console.log(`booksFavorited res`, res.data.book)
-            console.log(`favorites array`, favorites)
-            if(res.data.book.favoritedBy.includes(userId)){
-                setHideFav(`btn btn-success hide`)
-                setHideUnfav(`btn btn-warning`)
-            }
+            setFavorites([...res.data.book.favoritedBy])
+            console.log(`useeffect booksFavorited res`, res.data.book)
+            console.log(`useeffect favs`, favorites)
+            
             // setFavorites(res.data.book.favoritedBy)
             // console.log(res.data.book.addedBy)
             // console.log(res.data.book)
@@ -46,77 +45,45 @@ const BookDetail = (props) => {
     const favoriteBook = () => {
         // console.log(oneBook)
         if(!favorites.includes(username)){
-            console.log(favorites)
+            console.log(`favorite fn 1`, favorites)
             favorites.push(username)
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-            .then(res=>console.log(`fav success`, oneBook))
+            .then(res=>{
+                console.log(`fav success?`, oneBook, favorites)
+                navigate(`/books/${id}`)
+        })
             .catch(err=>console.log(`fav put error`, oneBook, favorites))
+            console.log(`favorite fn 2`, favorites)
         }
-        setHideFav("hide")
-        setHideUnfav("btn btn-warning")
+
     }
 
-    const unfavoriteBook = (deleteI) => {
-        // if(favorites.includes(username)){
-            
-            const filteredFavs = favorites.filter((list, i) => {
-                return i !== deleteI
-            })
-            setFavorites(filteredFavs)
-            console.log(filteredFavs)
 
-            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-            .then(res=>console.log(`unfav success`, oneBook))
-            .catch(err=>console.log(`unfav put error`, oneBook, favorites))
-        // }
-        setHideUnfav("hide")
-        setHideFav("btn btn-success")
+    const unfavoriteBook = (favId) => {
+        setFilteredFavs(favorites.filter(favorite => favId !== favorite.username))
+        // const filteredUsers = users.filter(user => user.age >= ageFilter);
+        setFavorites(filteredFavs)
+        console.log(`unfavorite fn 1`, favorites)
+        console.log(`filteredFavs`, filteredFavs)
+        axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
+        .then(res=>{
+            console.log(`UNfav success?`, oneBook, favorites, filteredFavs)
+            navigate(`/books/${id}`)
+        })
+        .catch(err=>console.log(`UNfav put error`, oneBook, favorites, filteredFavs))
+        console.log(`unfavorite fn 2`, favorites, filteredFavs)
+
     }
-
-    // Newer, broken fav unfav
-
-    // const favoriteBook = () => {
-    //     // console.log(oneBook)
-    //     if(!favorites?.includes(username)){
-    //         console.log(`inside fav IF`, oneBook)
-    //         favorites?.push(username)
-    //         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-    //         .then(res=>console.log(`fav success`))
-    //         .catch(err=>console.log(`fav put error`))
-    //     }
-    //     // console.log(oneBook)
-    //     setHideFav("hide")
-    //     setHideUnfav("btn btn-warning")
-    // }
-
-    // const unfavoriteBook = (deleteI) => {
-    //     for (let i=0; i<favorites?.length; i++){
-    //         favorites.pop()
-    //     }
-    //     if(!favorites?.includes(username)){
-    //         console.log(`inside unfav if`, oneBook)
-    //         const filteredFavs = favorites?.filter((list, i) => {
-    //             return i !== deleteI
-    //         })
-    //         favorites?.push(filteredFavs)
-    //         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
-    //         .then(res=>console.log(`unfav success`))
-    //         .catch(err=>console.log(`unfav put error`))
-    //     }
-    //     // console.log(oneBook)
-    //     setHideUnfav("hide")
-    //     setHideFav("btn btn-success")
-    // }
 
     return (
         <div>
             <div className='mt-5'>
                 <br/>
-                {/* {
-                    oneBook.favoritedBy.includes(username) ? <><button className={hideUnfav} onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;</>
-                } */}
-                <button className={hideFav} onClick={favoriteBook}>Favorite Book</button>
-                <button className={hideUnfav} onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;&nbsp;
+                {
+                    favorites.includes(username) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;</>
+                }
+                {/* <button className={hideFav} onClick={favoriteBook}>Favorite Book</button> */}
+                {/* <button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;&nbsp; */}
                 {
                     (username === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
                 }

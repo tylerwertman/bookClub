@@ -12,13 +12,12 @@ const Dashboard = (props) => {
     const [errors, setErrors] = useState({})
 
 
-
                                     // TO DO LIST
 
                                     // privatize /Dashboard
                                     // unfavs
-                                    // added by live update
-                                    // on login, live update nav username
+                                    // live update nav username on login & addedBy
+                                    // books by a user should be automatically favorited by that user
 
 
 
