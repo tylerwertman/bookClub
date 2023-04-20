@@ -44,38 +44,33 @@ const BookDetail = (props) => {
 
     const favoriteBook = () => {
         // console.log(oneBook)
-        if(!favorites.includes(username)){
+        if(!favorites?.includes(username)){
             console.log(`favorite fn 1`, favorites)
-            favorites.push(username)
+            favorites?.push(username)
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
             .then(res=>{
-                console.log(`fav success?`, oneBook, favorites)
+                console.log(`fav success?`, `favorites`, favorites)
                 navigate(`/books/${id}`)
         })
-            .catch(err=>console.log(`fav put error`, oneBook, favorites))
+            .catch(err=>console.log(`fav put error`, `favorites`, favorites))
             console.log(`favorite fn 2`, favorites)
         }
 
     }
 
 
-    const unfavoriteBook = (favId) => {
-        const updatedFavs = (favorites.filter(favorite => {
-            return favorite !== favId
-        }))
-        console.log(favId, updatedFavs)
-        setFilteredFavs(updatedFavs)
-        // const filteredUsers = users.filter(user => user.age >= ageFilter);
-        setFavorites(updatedFavs)
-        console.log(`unfavorite fn 1`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs)
+    const unfavoriteBook = () => {
+        const filteredFavs = favorites.filter(user => {return user!==username})
+        console.log(filteredFavs)
+        setFavorites(filteredFavs)
+        // console.log(`unfavorite fn 1`, `favorites`, favorites, `filteredFavs`, filteredFavs)
         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
         .then(res=>{
-            console.log(`UNfav success?`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs)
+            console.log(`UNfav success?`, `favorites`, favorites, `filteredFavs`, filteredFavs)
             navigate(`/books/${id}`)
         })
-        .catch(err=>console.log(`UNfav put error`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs))
-        console.log(`unfavorite fn 2`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs)
-
+        .catch(err=>console.log(`UNfav put error`, `favorites`, favorites, `filteredFavs`, filteredFavs))
+        // console.log(`unfavorite fn 2`, `favorites`, favorites, `filteredFavs`, filteredFavs)
     }
 
     return (
@@ -83,7 +78,7 @@ const BookDetail = (props) => {
             <div className='mt-5'>
                 <br/>
                 {
-                    favorites.includes(username) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;</>
+                    favorites?.includes(username) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;</>
                 }
                 {/* <button className={hideFav} onClick={favoriteBook}>Favorite Book</button> */}
                 {/* <button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;&nbsp; */}

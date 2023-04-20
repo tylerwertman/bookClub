@@ -26,6 +26,9 @@ const UserDetail = (props) => {
             <h4>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h4>
             <h4>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h4>
             <h4>Favorite Books:</h4>
+            {
+                
+            }
             <h4>Added Books:</h4>
         </div>
     )

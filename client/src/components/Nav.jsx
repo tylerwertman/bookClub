@@ -48,10 +48,8 @@ const Nav = (props) => {
                 :
                 <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link></>
                 }
-                    
             </div>
         </nav>
     )
 }
-
 export default Nav
