@@ -60,18 +60,21 @@ const BookDetail = (props) => {
 
 
     const unfavoriteBook = (favId) => {
-        setFilteredFavs(favorites.filter(favorite => favId !== favorite.username))
+        const updatedFavs = (favorites.filter(favorite => {
+            return favorite !== favId
+        }))
+        console.log(favId, updatedFavs)
+        setFilteredFavs(updatedFavs)
         // const filteredUsers = users.filter(user => user.age >= ageFilter);
-        setFavorites(filteredFavs)
-        console.log(`unfavorite fn 1`, favorites)
-        console.log(`filteredFavs`, filteredFavs)
+        setFavorites(updatedFavs)
+        console.log(`unfavorite fn 1`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs)
         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
         .then(res=>{
-            console.log(`UNfav success?`, oneBook, favorites, filteredFavs)
+            console.log(`UNfav success?`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs)
             navigate(`/books/${id}`)
         })
-        .catch(err=>console.log(`UNfav put error`, oneBook, favorites, filteredFavs))
-        console.log(`unfavorite fn 2`, favorites, filteredFavs)
+        .catch(err=>console.log(`UNfav put error`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs))
+        console.log(`unfavorite fn 2`, `favorites`, favorites, `filteredFavs`, filteredFavs, `updatedFavs`, updatedFavs)
 
     }
 
