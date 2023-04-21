@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom'
 
 const UserDetail = (props) => {
     const {id} = useParams()
-    const {username, userId} = props
+    const {welcome, user} = props
 
     const [oneUser, setOneUser] = useState({})
     // const [favs, setFavs] = useState([])
@@ -22,7 +22,7 @@ const UserDetail = (props) => {
     }, []);
     return (
         <div className='mt-5'>
-            <h2>Username: {username}</h2>
+            <h2>Username: {welcome}</h2>
             <h4>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h4>
             <h4>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h4>
             <h4>Favorite Books:</h4>

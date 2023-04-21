@@ -1,25 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+// TO DO LIST
+
+// privatize /Dashboard
+// live update nav username on login & addedBy
+// books by a user should be automatically favorited by that user
 
 const Dashboard = (props) => {
-    const {username, userId} = props
-
+    const {user, count, setCount} = props
     const navigate = useNavigate();
-
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
-
-
-                                    // TO DO LIST
-
-                                    // privatize /Dashboard
-                                    // unfavs
-                                    // live update nav username on login & addedBy
-                                    // books by a user should be automatically favorited by that user
-
-
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -30,14 +23,15 @@ const Dashboard = (props) => {
         .catch(err=>console.log(err))
     
         navigate('/dashboard')
-    }, []);
+    }, [count]);
     
+
 
     const changeHandler = (e) => {
         setOneBook({
             ...oneBook,
             [e.target.name]: e.target.value,
-            addedBy: userId
+            addedBy: user._id
         })
     }
     const submitHandler = (e) => {
@@ -57,6 +51,10 @@ const Dashboard = (props) => {
                 title: "",
                 author: ""
             })
+            
+            // window.location.reload()
+            setCount(count+1)
+            console.log(`dash submit`, count)
         })
         .catch(err=>{
             console.log(`submit errer`, err)
@@ -97,11 +95,10 @@ const Dashboard = (props) => {
                     {
                         bookList.map((book, index) => {
                             return <div key={index}>
-                            <Link to={`/books/${book._id}`}>{book.title}</Link>&nbsp;
-                            <p>(added by <Link to={`/users/${userId}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p>
+                            <Link to={`/books/${book._id}`}>{book.title}</Link>
+                            <p>(added by <Link to={`/users/${user._id}`}>{book.addedBy.firstName} {book.addedBy.lastName}</Link>)</p>
                             </div>
                         })
-
                     }
                 </div>
             </div>

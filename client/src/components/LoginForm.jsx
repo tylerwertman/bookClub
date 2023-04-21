@@ -4,6 +4,7 @@ import axios from 'axios'
 
 const LoginForm = (props) => {
 
+    const {count, setCount} = props
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
         email: "",
@@ -22,6 +23,8 @@ const LoginForm = (props) => {
         .then(res=>{
             // console.log(res);
             navigate('/dashboard')
+            // window.location.reload()
+            setCount(count+1)
         })
         .catch(err=>{
             console.log(`login errer`, err)
@@ -37,7 +40,6 @@ const LoginForm = (props) => {
                 <form onSubmit={submitHandler}>
                     <h3 className='mt-3'>Login</h3>
                     {errors.msg ? <p className="text-danger">{errors.msg}</p>: ""}
-
                     <div className="form-group">
                         <label className='form-label'>Email</label>
                         <input type="email" className="form-control" name="email" value={userInfo.email} onChange={changeHandler}/>
@@ -54,5 +56,4 @@ const LoginForm = (props) => {
         </div>
     )
 }
-
 export default LoginForm

@@ -3,7 +3,7 @@ import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
 
 const BookDetail = (props) => {
-    const {username, userId} = props
+    const {welcome} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
@@ -44,9 +44,9 @@ const BookDetail = (props) => {
 
     const favoriteBook = () => {
         // console.log(oneBook)
-        if(!favorites?.includes(username)){
+        if(!favorites?.includes(welcome)){
             console.log(`favorite fn 1`, favorites)
-            favorites?.push(username)
+            favorites?.push(welcome)
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
             .then(res=>{
                 console.log(`fav success?`, `favorites`, favorites)
@@ -60,7 +60,7 @@ const BookDetail = (props) => {
 
 
     const unfavoriteBook = () => {
-        const filteredFavs = favorites.filter(user => {return user!==username})
+        const filteredFavs = favorites.filter(user => {return user!==welcome})
         console.log(filteredFavs)
         setFavorites(filteredFavs)
         // console.log(`unfavorite fn 1`, `favorites`, favorites, `filteredFavs`, filteredFavs)
@@ -78,16 +78,16 @@ const BookDetail = (props) => {
             <div className='mt-5'>
                 <br/>
                 {
-                    favorites?.includes(username) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;</>
+                    favorites?.includes(welcome) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
                 }
                 {/* <button className={hideFav} onClick={favoriteBook}>Favorite Book</button> */}
                 {/* <button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;&nbsp; */}
                 {
-                    (username === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
                 }
                 
                 {
-                    (username === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-info' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
+                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-info' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
                 }
                 <br/>                
                 <h2>Book Title: {oneBook.title}</h2>
