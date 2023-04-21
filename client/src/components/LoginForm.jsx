@@ -6,11 +6,12 @@ const LoginForm = (props) => {
 
     const {count, setCount} = props
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({})
     const [userInfo, setUserInfo] = useState({
         email: "",
         password: ""
     })
-    const [errors, setErrors] = useState({})
+
     const changeHandler = (e) => {
         setUserInfo({
             ...userInfo,
@@ -21,10 +22,8 @@ const LoginForm = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/login', userInfo, {withCredentials: true})
         .then(res=>{
-            // console.log(res);
-            navigate('/dashboard')
+            console.log(res);
             // window.location.reload()
-            setCount(count+1)
         })
         .catch(err=>{
             console.log(`login errer`, err)
@@ -33,6 +32,8 @@ const LoginForm = (props) => {
             })
             console.log(errors)
         })
+        setCount(count+1)
+        navigate('/dashboard')
     }
     return (
         <div>

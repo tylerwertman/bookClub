@@ -11,14 +11,13 @@ const Nav = (props) => {
         // setCount(count+1)
         setWelcome(welcome)
         console.log(`nav ue`, count)
-        setCount(count+1)
-    }, [])
+    }, [count])
     
     // console.log(user?.current)
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, {withCredentials: true})
             .then(res=>{
-                console.log(res)
+                console.log(res.data)
                 navigate('/')
                 setWelcome("Guest")
                 setLoggedIn(false)

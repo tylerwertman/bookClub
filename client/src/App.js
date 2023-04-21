@@ -27,12 +27,12 @@ function App() {
     if(cookieValue){
       setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
       setUser(jwtdecode(cookieValue))
-      console.log(`user`, user)
       setLoggedIn(true)
     }else{
       setWelcome("Guest")
     }
   }, []);
+  console.log(`user`, user)
   // console.log(user.current)
   return (
     <div className="App">

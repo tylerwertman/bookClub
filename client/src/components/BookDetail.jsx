@@ -3,11 +3,12 @@ import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
 
 const BookDetail = (props) => {
-    const {welcome} = props
+    const {welcome, user} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
     const [favorites, setFavorites] = useState([])
+    const [booksFavorited, setBooksFavorited] = useState([])
     const [filteredFavs, setFilteredFavs] = useState([])
     const hideFav = "btn btn-success"
     const hideUnfav = "btn btn-warning"
@@ -47,16 +48,25 @@ const BookDetail = (props) => {
         if(!favorites?.includes(welcome)){
             console.log(`favorite fn 1`, favorites)
             favorites?.push(welcome)
+
+            //put to books object
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
             .then(res=>{
-                console.log(`fav success?`, `favorites`, favorites)
+                console.log(`book fav success?`, `favorites`, favorites)
                 navigate(`/books/${id}`)
         })
             .catch(err=>console.log(`fav put error`, `favorites`, favorites))
-            console.log(`favorite fn 2`, favorites)
+            console.log(`book favorite fn 2`, favorites)
         }
 
-    }
+        //put to user object
+        axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            .then(res=>{
+                console.log(`user fav success?`, `favorites`, booksFavorited)
+        })
+            .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
+            console.log(`user favorite fn 2`, booksFavorited)
+        }
 
 
     const unfavoriteBook = () => {

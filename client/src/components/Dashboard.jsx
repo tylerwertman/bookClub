@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 // TO DO LIST
 
 // privatize /Dashboard
-// live update nav username on login & addedBy
+// live update nav username on login
 // books by a user should be automatically favorited by that user
 
 const Dashboard = (props) => {
@@ -51,7 +51,6 @@ const Dashboard = (props) => {
                 title: "",
                 author: ""
             })
-            
             // window.location.reload()
             setCount(count+1)
             console.log(`dash submit`, count)
