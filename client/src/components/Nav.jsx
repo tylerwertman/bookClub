@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Nav = (props) => {
-    const {welcome, setWelcome, loggedIn, setLoggedIn, userId, setUserId, count, setCount} = props
+    const {welcome, setWelcome, loggedIn, setLoggedIn, count, setCount} = props
     const navigate = useNavigate()
     // const userRef = useRef()
     

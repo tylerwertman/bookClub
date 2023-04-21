@@ -8,11 +8,13 @@ import { Link, useNavigate } from 'react-router-dom'
 // books by a user should be automatically favorited by that user
 
 const Dashboard = (props) => {
-    const {user, count, setCount} = props
+    const {user, count, setCount, welcome} = props
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
+    const [favoritedBy, setFavorites] = useState([])
+    const [booksFavorited, setBooksFavorited] = useState([])
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -42,7 +44,25 @@ const Dashboard = (props) => {
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
             navigate("/dashboard")
-            console.log(bookList)
+            console.log(res.data.book._id)
+            favoritedBy.push(welcome)
+
+            //put to books object
+            axios.put(`http://localhost:8000/api/books/${res.data.book._id}`, {favoritedBy: favoritedBy})
+            .then(res=>{
+                console.log(`book added & favd`)
+                // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
+        })
+            .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
+            console.log(`book favorite fn 2`, favoritedBy)
+
+            // put to user object
+            // axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            // .then(res=>{
+            //     console.log(`user fav success?`, `favorites`, booksFavorited)
+            // })
+            // .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
+            
             setOneBook({
                 title: "",
                 author: ""
@@ -54,6 +74,10 @@ const Dashboard = (props) => {
             // window.location.reload()
             setCount(count+1)
             console.log(`dash submit`, count)
+
+                
+            
+            
         })
         .catch(err=>{
             console.log(`submit errer`, err)
@@ -63,6 +87,7 @@ const Dashboard = (props) => {
             })
             console.log(errors)
         })
+
     }
     return (
         <div>

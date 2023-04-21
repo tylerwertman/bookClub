@@ -6,7 +6,7 @@ import RegisterForm from './components/RegisterForm';
 import BookDetail from './components/BookDetail'
 import Home from './components/Home';
 import {Routes, Route} from 'react-router-dom'
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect} from 'react'
 import EditBook from './components/EditBook';
 import Nav from './components/Nav';
 import Cookies from 'js-cookie';
@@ -32,17 +32,16 @@ function App() {
       setWelcome("Guest")
     }
   }, []);
-  console.log(`user`, user)
-  // console.log(user.current)
+  // console.log(`user`, user)
   return (
     <div className="App">
       <Nav welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/dashboard" element={<Dashboard user={user} count={count} setCount={setCount}/>}/>
+        <Route path="/dashboard" element={<Dashboard user={user} welcome={welcome} count={count} setCount={setCount}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount}/>}/>
         <Route path="/register" element={<RegisterForm />}/>
-        <Route path="/books/:id" element={<BookDetail welcome={welcome}/>}/>
+        <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user}/>}/>
         <Route path="/users/:id" element={<UserDetail welcome={welcome}  user={user}/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
         <Route path="*" element={<NotFound/>}/>

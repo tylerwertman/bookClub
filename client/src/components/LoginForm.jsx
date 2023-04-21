@@ -23,7 +23,9 @@ const LoginForm = (props) => {
         axios.post('http://localhost:8000/api/users/login', userInfo, {withCredentials: true})
         .then(res=>{
             console.log(res);
-            // window.location.reload()
+            // setCount(count+1)
+            navigate('/dashboard')
+            window.location.reload()
         })
         .catch(err=>{
             console.log(`login errer`, err)
@@ -32,8 +34,6 @@ const LoginForm = (props) => {
             })
             console.log(errors)
         })
-        setCount(count+1)
-        navigate('/dashboard')
     }
     return (
         <div>

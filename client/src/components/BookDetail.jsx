@@ -7,11 +7,11 @@ const BookDetail = (props) => {
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
-    const [favorites, setFavorites] = useState([])
+    const [favoritedBy, setFavorites] = useState([])
     const [booksFavorited, setBooksFavorited] = useState([])
     const [filteredFavs, setFilteredFavs] = useState([])
     const hideFav = "btn btn-success"
-    const hideUnfav = "btn btn-warning"
+    const hideUnfav = "btn btn-danger"
 
 
     useEffect(() => {
@@ -20,14 +20,14 @@ const BookDetail = (props) => {
             setOneBook(res.data.book)
             setFavorites([...res.data.book.favoritedBy])
             console.log(`useeffect booksFavorited res`, res.data.book)
-            console.log(`useeffect favs`, favorites)
+            console.log(`useeffect favs`, favoritedBy)
             
             // setFavorites(res.data.book.favoritedBy)
             // console.log(res.data.book.addedBy)
             // console.log(res.data.book)
             // console.log(username)
 
-            // console.log(favorites)
+            // console.log(favoritedBy)
         })
         // .then(console.log(oneBook))
         .catch(err=>console.log(err))
@@ -45,60 +45,61 @@ const BookDetail = (props) => {
 
     const favoriteBook = () => {
         // console.log(oneBook)
-        if(!favorites?.includes(welcome)){
-            console.log(`favorite fn 1`, favorites)
-            favorites?.push(welcome)
+        console.log(user)
+        if(!favoritedBy?.includes(welcome)){
+            console.log(`favorite fn 1`, favoritedBy)
+            favoritedBy?.push(welcome)
 
             //put to books object
-            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favorites})
+            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favoritedBy})
             .then(res=>{
-                console.log(`book fav success?`, `favorites`, favorites)
+                console.log(`book fav success?`, `favoritedBy`, favoritedBy)
                 navigate(`/books/${id}`)
         })
-            .catch(err=>console.log(`fav put error`, `favorites`, favorites))
-            console.log(`book favorite fn 2`, favorites)
-        }
-
-        //put to user object
-        axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
+            console.log(`book favorite fn 2`, favoritedBy)
+            
+            // put to user object
+            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
             .then(res=>{
                 console.log(`user fav success?`, `favorites`, booksFavorited)
-        })
+            })
             .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
-            console.log(`user favorite fn 2`, booksFavorited)
+        }
         }
 
 
     const unfavoriteBook = () => {
-        const filteredFavs = favorites.filter(user => {return user!==welcome})
-        console.log(filteredFavs)
+        const filteredFavs = favoritedBy.filter(user => {return user!==welcome})
+        console.log(`unfav filtered`, filteredFavs)
         setFavorites(filteredFavs)
-        // console.log(`unfavorite fn 1`, `favorites`, favorites, `filteredFavs`, filteredFavs)
+        // console.log(`unfavorite fn 1`, `favoritedBy`, favorites, `filteredFavs`, filteredFavs)
         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
         .then(res=>{
-            console.log(`UNfav success?`, `favorites`, favorites, `filteredFavs`, filteredFavs)
+            console.log(`UNfav success?`, `favoritedBy`, favoritedBy, `filteredFavs`, filteredFavs)
             navigate(`/books/${id}`)
         })
-        .catch(err=>console.log(`UNfav put error`, `favorites`, favorites, `filteredFavs`, filteredFavs))
-        // console.log(`unfavorite fn 2`, `favorites`, favorites, `filteredFavs`, filteredFavs)
+        .catch(err=>console.log(`UNfav put error`, `favoritedBy`, favoritedBy, `filteredFavs`, filteredFavs))
+        // console.log(`unfavorite fn 2`, `favoritedBy`, favoritedBy, `filteredFavs`, filteredFavs)
     }
 
     return (
         <div>
             <div className='mt-5'>
                 <br/>
+                <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
                 {
-                    favorites?.includes(welcome) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
+                    favoritedBy?.includes(welcome) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
                 }
                 {/* <button className={hideFav} onClick={favoriteBook}>Favorite Book</button> */}
-                {/* <button className={hideUnfav} onClick={()=>unfavoriteBook(favorites.id)}>Unfavorite Book</button>&nbsp;&nbsp; */}
+                {/* <button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp; */}
                 {
-                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-danger' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
                 }
-                
                 {
-                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-info' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
+                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-dark' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
                 }
+
                 <br/>                
                 <h2>Book Title: {oneBook.title}</h2>
                 <h3>Book Author: {oneBook.author}</h3>
@@ -107,8 +108,8 @@ const BookDetail = (props) => {
                 <h6>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h6>
                 <h4>Favorited By:</h4>
                 {
-                    favorites?.map((fav, index) => {
-                        return <h5 key={index}>{favorites[index]}<br/> </h5>
+                    favoritedBy?.map((fav, index) => {
+                        return <h5 key={index}>{favoritedBy[index]}<br/> </h5>
                     })
                 }
             </div>
