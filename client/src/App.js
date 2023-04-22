@@ -16,7 +16,7 @@ import UserDetail from './components/UserDetail';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const cookieValue = Cookies.get('userToken');
-  const [welcome, setWelcome] = useState("Guest")
+  const [welcome, setWelcome] = useState()
   const [count, setCount] = useState(0)
   const [user, setUser] = useState()
   
