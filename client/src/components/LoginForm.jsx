@@ -25,7 +25,7 @@ const LoginForm = (props) => {
             console.log(res);
             // setCount(count+1)
             navigate('/dashboard')
-            window.location.reload()
+            // window.location.reload()
         })
         .catch(err=>{
             console.log(`login errer`, err)

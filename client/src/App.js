@@ -15,10 +15,10 @@ import UserDetail from './components/UserDetail';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
-  const cookieValue = Cookies.get('userToken');
   const [welcome, setWelcome] = useState()
   const [count, setCount] = useState(0)
   const [user, setUser] = useState()
+  const cookieValue = Cookies.get('userToken');
   
   useEffect(() => {
     console.log(`appjs ue`, count)
