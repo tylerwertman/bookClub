@@ -1,24 +1,20 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import jwtdecode from 'jwt-decode'
 
 
 const Nav = (props) => {
-    const {cookieValue, welcome, setWelcome, loggedIn, setLoggedIn, count} = props
+    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, count} = props
+
     const navigate = useNavigate()
-    // const userRef = useRef()
     
     useEffect(() => {
-        // setCount(count+1)
-        // setWelcome(welcome)
         if(cookieValue){
             setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
         }
-        // console.log(`nav ue`, count2)
     }, [count])
     
-    // console.log(user?.current)
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, {withCredentials: true})
             .then(res=>{
@@ -26,10 +22,10 @@ const Nav = (props) => {
                 navigate('/')
                 setWelcome("Guest")
                 setLoggedIn(false)
+                setUser()
             })
             .catch(err=>console.log(err))
         console.log("logging out")
-        // console.log(user)
     }
 
     const navHome = () => {
@@ -47,7 +43,11 @@ const Nav = (props) => {
             {/* <p>Cookie value: {cookieValue}</p> */}
             <h1 style={{display:'inline'}} onClick={(navHome)}>Book Club</h1>
             {/* <h1 style={{display:'inline'}}>Book Club</h1>&nbsp; */}
-            <h4 key={count} style={{display:'inline'}}>Welcome, {welcome}</h4>
+            {
+                welcome!=="Guest" ?
+                <><h4 style={{display:'inline'}}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></> :
+                <h4 style={{display:'inline'}}>Welcome, Guest</h4>
+            }
             </div>
             <div>
                 {

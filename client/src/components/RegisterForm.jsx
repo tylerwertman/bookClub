@@ -31,6 +31,8 @@ const RegisterForm = (props) => {
             setCount(count+1)
             navigate('/dashboard')
             setLoggedIn(true)
+            window.location.reload()
+
         })
         .catch(err=>{
             console.log(`submit errer`, err)

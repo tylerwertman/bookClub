@@ -6,8 +6,7 @@ import jwtdecode from 'jwt-decode'
 // TO DO LIST
 
 // privatize /Dashboard
-// live update nav username on login
-// books by a user should be automatically favorited by that user
+// adding consecutive books makes consecutive favs...fix that.
 
 const Dashboard = (props) => {
     const {cookieValue, user, count, setCount} = props
@@ -15,7 +14,7 @@ const Dashboard = (props) => {
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
-    const [favoritedBy, setFavorites] = useState([])
+    const [favoritedBy, setFavoritedBy] = useState([])
     const [booksFavorited, setBooksFavorited] = useState([])
 
     useEffect(() => {
@@ -23,46 +22,53 @@ const Dashboard = (props) => {
         .then(res=>{
             setBookList(res.data.book)
             // console.log(`booklist`, res.data.book)
+            console.log(bookList[0])
         })
         .catch(err=>console.log(err))
     }, [count]);
     
-
+    
     const changeHandler = (e) => {
         setOneBook({
             ...oneBook,
             [e.target.name]: e.target.value,
-            addedBy: user._id
+            addedBy: user?._id
         })
     }
     const submitHandler = (e) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/books', oneBook)
         .then(res=>{
+            console.log(oneBook.addedBy)
             console.log(res.data.book);
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
             navigate("/dashboard")
-            console.log(res.data.book._id)
+            console.log(res.data.book?._id)
             favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
             booksFavorited.push(res.data.book.title)
+            console.log(`booksFavorited after push`, booksFavorited)
+            // setBooksFavorited([...booksFavorited, res.data.book.title])
 
             //put to books object
-            axios.put(`http://localhost:8000/api/books/${res.data.book._id}`, {favoritedBy: favoritedBy})
+            axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
             .then(res=>{
                 console.log(`book added & favd`)
+                // booksFavorited.pop()
+                setFavoritedBy([...favoritedBy])
                 // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
         })
             .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
             console.log(`book favorite fn 2`, favoritedBy)
 
             // put to user object
-            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
             .then(res=>{
                 console.log(`user fav success?`, `favorites`, booksFavorited)
+                setBooksFavorited([...booksFavorited])
             })
             .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
-            
+        
             setOneBook({
                 title: "",
                 author: ""
@@ -74,10 +80,6 @@ const Dashboard = (props) => {
             // window.location.reload()
             setCount(count+1)
             // console.log(`dash submit`, count)
-
-                
-            
-            
         })
         .catch(err=>{
             console.log(`submit errer`, err)
@@ -120,8 +122,8 @@ const Dashboard = (props) => {
                     {
                         bookList.map((book, index) => {
                             return <div key={index}>
-                            <Link to={`/books/${book?._id}`}>{book?.title}</Link>
-                            <p>(added by <Link to={`/users/${user?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p>
+                                <Link to={`/books/${book?._id}`}>{book?.title}</Link>
+                                {bookList[index]?.addedBy?._id ? <p>(added by <Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p> : <p>(added by Deleted User)</p>}
                             </div>
                         })
                     }

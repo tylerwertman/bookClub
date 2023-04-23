@@ -7,7 +7,7 @@ const BookDetail = (props) => {
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
-    const [favoritedBy, setFavorites] = useState([])
+    const [favoritedBy, setFavoritedBy] = useState([])
     const [booksFavorited, setBooksFavorited] = useState([])
     const [filteredFavs, setFilteredFavs] = useState([])
     const hideFav = "btn btn-success"
@@ -18,9 +18,10 @@ const BookDetail = (props) => {
         axios.get(`http://localhost:8000/api/books/${id}`)
         .then(res=>{
             setOneBook(res.data.book)
-            setFavorites([...res.data.book.favoritedBy])
-            console.log(`useeffect booksFavorited res`, res.data.book)
-            console.log(`useeffect favs`, favoritedBy)
+            setFavoritedBy([...res.data.book.favoritedBy])
+            console.log(`bDetail favoritedBy`, res.data.book.favoritedBy)
+            // console.log(`useeffect booksFavorited res`, res.data.book)
+            // console.log(`useeffect favs`, favoritedBy)
             
             // setFavorites(res.data.book.favoritedBy)
             // console.log(res.data.book.addedBy)
@@ -72,7 +73,7 @@ const BookDetail = (props) => {
     const unfavoriteBook = () => {
         const filteredFavs = favoritedBy.filter(user => {return user!==welcome})
         console.log(`unfav filtered`, filteredFavs)
-        setFavorites(filteredFavs)
+        setFavoritedBy(filteredFavs)
         // console.log(`unfavorite fn 1`, `favoritedBy`, favorites, `filteredFavs`, filteredFavs)
         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavs})
         .then(res=>{
@@ -88,28 +89,26 @@ const BookDetail = (props) => {
             <div className='mt-5'>
                 <br/>
                 <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
-                {
+                { // fav/unfav
                     favoritedBy?.includes(welcome) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
                 }
-                {/* <button className={hideFav} onClick={favoriteBook}>Favorite Book</button> */}
-                {/* <button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp; */}
-                {
+                { // edit
                     (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
                 }
-                {
+                { // delete
                     (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-dark' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
                 }
 
                 <br/>                
                 <h2>Book Title: {oneBook.title}</h2>
                 <h3>Book Author: {oneBook.author}</h3>
-                <h4>Added by: {oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</h4>
+                <h4 style={{display:"inline"}}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{display:"inline"}}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</h4> : <h4 style={{display:"inline"}}>Deleted User</h4>}
                 <h6>Added on: {new Date(oneBook.createdAt).toLocaleString()}</h6>
                 <h6>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h6>
                 <h4>Favorited By:</h4>
                 {
-                    favoritedBy?.map((fav, index) => {
-                        return <h5 key={index}>{favoritedBy[index]}<br/> </h5>
+                    favoritedBy?.map((fav, i) => {
+                        return <h5 key={i}>{fav}</h5>
                     })
                 }
             </div>

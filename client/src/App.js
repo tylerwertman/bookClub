@@ -12,12 +12,12 @@ import Nav from './components/Nav';
 import Cookies from 'js-cookie';
 import jwtdecode from 'jwt-decode'
 import UserDetail from './components/UserDetail';
+import UserNotFound from './components/UserNotFound'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [welcome, setWelcome] = useState()
   const [count, setCount] = useState(0)
-  // const [count2, setCount2] = useState(0)
   const [user, setUser] = useState()
   const cookieValue = Cookies.get('userToken');
   
@@ -36,15 +36,16 @@ function App() {
   // console.log(`user`, user)
   return (
     <div className="App">
-      <Nav cookieValue={cookieValue} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count}/>
+      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user}/>}/>
-        <Route path="/users/:id" element={<UserDetail welcome={welcome} user={user}/>}/>
+        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} count={count} setCount={setCount} user={user} setLoggedIn={setLoggedIn}/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
+        <Route path="/users/undefined" element={<UserNotFound/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
     </div>
