@@ -5,7 +5,7 @@ import jwtdecode from 'jwt-decode'
 
 
 const Nav = (props) => {
-    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, count} = props
+    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count} = props
 
     const navigate = useNavigate()
     
@@ -15,6 +15,14 @@ const Nav = (props) => {
         }
     }, [count])
     
+    const clearBooks = () => {
+        axios.delete(`http://localhost:8000/api/books/`)
+        .then(res=>{
+            setCount(count+1)            
+        })
+        .catch(err=>console.log(err))
+    }
+
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, {withCredentials: true})
             .then(res=>{
@@ -40,9 +48,7 @@ const Nav = (props) => {
     return (
         <nav>
             <div>
-            {/* <p>Cookie value: {cookieValue}</p> */}
             <h1 style={{display:'inline'}} onClick={(navHome)}>Book Club</h1>
-            {/* <h1 style={{display:'inline'}}>Book Club</h1>&nbsp; */}
             {
                 welcome!=="Guest" ?
                 <><h4 style={{display:'inline'}}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></> :
@@ -50,6 +56,8 @@ const Nav = (props) => {
             }
             </div>
             <div>
+                <button className='btn btn-dark' onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp;
+
                 {
                 (welcome!=="Guest") ?
                 // (loggedIn) ?

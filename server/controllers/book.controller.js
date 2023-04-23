@@ -36,3 +36,8 @@ module.exports.deleteBook = (req, res) => {
         .then(result => res.json({ result: result }))
         .catch(err => res.status(400).json({ message: "Something went worng deleting a book", error: err }))
 }
+module.exports.deleteAllBooks = (req, res) => {
+    Book.deleteMany()
+        .then(result => res.json({ result: result }))
+        .catch(err => res.status(400).json({ message: "Something went worng deleting all books", error: err }))
+}

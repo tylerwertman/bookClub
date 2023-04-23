@@ -21,8 +21,9 @@ const Dashboard = (props) => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
             setBookList(res.data.book)
+            // setBooksFavorited([...booksFavorited])
+            // console.log(booksFavorited)
             // console.log(`booklist`, res.data.book)
-            console.log(bookList[0])
         })
         .catch(err=>console.log(err))
     }, [count]);
@@ -39,35 +40,36 @@ const Dashboard = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/books', oneBook)
         .then(res=>{
-            console.log(oneBook.addedBy)
+            // console.log(oneBook.addedBy)
             console.log(res.data.book);
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
-            navigate("/dashboard")
-            console.log(res.data.book?._id)
-            favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
-            booksFavorited.push(res.data.book.title)
-            console.log(`booksFavorited after push`, booksFavorited)
-            // setBooksFavorited([...booksFavorited, res.data.book.title])
 
-            //put to books object
+            // after posting book to DB, set the favoritedBy and booksFavorited to put those to the book and user objects
+            favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)                                          // works
+            // setFavoritedBy([...favoritedBy, (jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
+            booksFavorited.push(res.data.book.title)
+            // setBooksFavorited([...booksFavorited, res.data.book.title])                                                                                           //doesn't retain next entry on userdetail page
+
+            //axios put to favs array in books object
             axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
             .then(res=>{
-                console.log(`book added & favd`)
+                console.log(`success putting user to favs in book obj`)
                 // booksFavorited.pop()
-                setFavoritedBy([...favoritedBy])
+                setFavoritedBy([])
+                // favoritedBy.pop()
+                // console.log(favoritedBy)
                 // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
         })
             .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
-            console.log(`book favorite fn 2`, favoritedBy)
 
-            // put to user object
+            // axios put to favs array in user object 
             axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
             .then(res=>{
-                console.log(`user fav success?`, `favorites`, booksFavorited)
-                setBooksFavorited([...booksFavorited])
+                console.log(`success putting to favs in user`, `favorites`, booksFavorited)
+                // setBooksFavorited([...booksFavorited])
             })
-            .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
+            .catch(err=>console.log(`errer putting to favs in user obj`, `favorites`, booksFavorited))
         
             setOneBook({
                 title: "",

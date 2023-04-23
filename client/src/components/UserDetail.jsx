@@ -12,10 +12,12 @@ const UserDetail = (props) => {
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
         .then(res=>{
-            // console.log(res.data.user)
+            console.log(res.data.user)
             setOneUser(res.data.user)
             setBooksFavorited([...res.data.user.booksFavorited])
+            booksFavorited.push(res.data.user.booksFavorited)
             console.log(`uDetail booksFavorited`, res.data.user.booksFavorited)
+            console.log(oneUser)
             // setFavorites(res.data.book.favoritedBy)
             // console.log(res)
         })
@@ -50,12 +52,15 @@ const UserDetail = (props) => {
             <h4>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h4>
             <h4>Favorite Books:</h4>
             {
-                booksFavorited?.map((favs, i)=>{
+                oneUser?.booksFavorited?.map((favs, i)=>{
                     return <h5 key={i}>{favs}</h5>
 
                 })
             }
             <h4>Added Books:</h4>
+            {
+
+            }
             {welcome === (user?.firstName + " " + user?.lastName) ? <button className='btn btn-dark' onClick={deleteAccount}>Delete Account</button> : null}
         </div>
     )

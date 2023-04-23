@@ -6,4 +6,5 @@ module.exports = app => {
     app.post('/api/books', BookController.createBook)
     app.put('/api/books/:id', BookController.updateBook)
     app.delete('/api/books/:id', BookController.deleteBook)
+    app.delete('/api/books/', BookController.deleteAllBooks)
 }

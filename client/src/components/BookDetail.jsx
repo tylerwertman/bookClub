@@ -100,11 +100,11 @@ const BookDetail = (props) => {
                 }
 
                 <br/>                
-                <h2>Book Title: {oneBook.title}</h2>
-                <h3>Book Author: {oneBook.author}</h3>
+                <h2>Book Title: {oneBook?.title}</h2>
+                <h3>Book Author: {oneBook?.author}</h3>
                 <h4 style={{display:"inline"}}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{display:"inline"}}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</h4> : <h4 style={{display:"inline"}}>Deleted User</h4>}
-                <h6>Added on: {new Date(oneBook.createdAt).toLocaleString()}</h6>
-                <h6>Last Updated on: {new Date(oneBook.updatedAt).toLocaleString()}</h6>
+                <h6>Added on: {new Date(oneBook?.createdAt).toLocaleString()}</h6>
+                <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>
                 <h4>Favorited By:</h4>
                 {
                     favoritedBy?.map((fav, i) => {
