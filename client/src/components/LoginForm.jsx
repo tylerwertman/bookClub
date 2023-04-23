@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import jwtdecode from 'jwt-decode'
+
 
 const LoginForm = (props) => {
 
@@ -22,9 +24,10 @@ const LoginForm = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/login', userInfo, {withCredentials: true})
         .then(res=>{
-            console.log(res);
-            // setCount(count+1)
+            // console.log(res);
+            setCount(count+1)
             navigate('/dashboard')
+            
             // window.location.reload()
         })
         .catch(err=>{
@@ -37,6 +40,7 @@ const LoginForm = (props) => {
     }
     return (
         <div>
+            <br/>
             <div className="col-md-5 mx-auto mt-5">
                 <form onSubmit={submitHandler}>
                     <h3 className='mt-3'>Login</h3>

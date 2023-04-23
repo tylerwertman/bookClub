@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import jwtdecode from 'jwt-decode'
+
 // TO DO LIST
 
 // privatize /Dashboard
@@ -8,7 +10,7 @@ import { Link, useNavigate } from 'react-router-dom'
 // books by a user should be automatically favorited by that user
 
 const Dashboard = (props) => {
-    const {user, count, setCount, welcome} = props
+    const {cookieValue, user, count, setCount} = props
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
@@ -20,14 +22,11 @@ const Dashboard = (props) => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
             setBookList(res.data.book)
-            console.log(`booklist`, res.data.book)
+            // console.log(`booklist`, res.data.book)
         })
         .catch(err=>console.log(err))
-    
-        navigate('/dashboard')
     }, [count]);
     
-
 
     const changeHandler = (e) => {
         setOneBook({
@@ -45,7 +44,8 @@ const Dashboard = (props) => {
             setBookList([...bookList, res.data.book])
             navigate("/dashboard")
             console.log(res.data.book._id)
-            favoritedBy.push(welcome)
+            favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
+            booksFavorited.push(res.data.book.title)
 
             //put to books object
             axios.put(`http://localhost:8000/api/books/${res.data.book._id}`, {favoritedBy: favoritedBy})
@@ -57,11 +57,11 @@ const Dashboard = (props) => {
             console.log(`book favorite fn 2`, favoritedBy)
 
             // put to user object
-            // axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
-            // .then(res=>{
-            //     console.log(`user fav success?`, `favorites`, booksFavorited)
-            // })
-            // .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
+            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            .then(res=>{
+                console.log(`user fav success?`, `favorites`, booksFavorited)
+            })
+            .catch(err=>console.log(`fav put error`, `favorites`, booksFavorited))
             
             setOneBook({
                 title: "",
@@ -73,7 +73,7 @@ const Dashboard = (props) => {
             })
             // window.location.reload()
             setCount(count+1)
-            console.log(`dash submit`, count)
+            // console.log(`dash submit`, count)
 
                 
             
@@ -91,7 +91,8 @@ const Dashboard = (props) => {
     }
     return (
         <div>
-            <h1>Welcome to the dashboard</h1>
+            <br/><br/><br/>
+            {/* <h1>Welcome to the dashboard</h1> */}
             {/* <button className='btn btn-danger' onClick={logout}>Logout</button> */}
             <div className="row">
                 <div className="col-md-6" style={{display:'inline'}}>
@@ -119,8 +120,8 @@ const Dashboard = (props) => {
                     {
                         bookList.map((book, index) => {
                             return <div key={index}>
-                            <Link to={`/books/${book._id}`}>{book.title}</Link>
-                            <p>(added by <Link to={`/users/${user._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p>
+                            <Link to={`/books/${book?._id}`}>{book?.title}</Link>
+                            <p>(added by <Link to={`/users/${user?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p>
                             </div>
                         })
                     }

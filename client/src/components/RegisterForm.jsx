@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const RegisterForm = (props) => {
-    const {setLoggedIn} = props
+    const {setLoggedIn, count, setCount} = props
 
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
@@ -27,7 +27,8 @@ const RegisterForm = (props) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/register', userInfo, {withCredentials: true})
         .then(res=>{
-            console.log(res);
+            // console.log(res);
+            setCount(count+1)
             navigate('/dashboard')
             setLoggedIn(true)
         })
@@ -45,6 +46,7 @@ const RegisterForm = (props) => {
     }
     return (
         <div>
+            <br/>
             <div className="col-md-5 mx-auto mt-5">
                 <form onSubmit={submitHandler}>
                     <h3>Register</h3>

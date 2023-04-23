@@ -1,23 +1,28 @@
 import React, {useEffect, useRef} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import jwtdecode from 'jwt-decode'
+
 
 const Nav = (props) => {
-    const {welcome, setWelcome, loggedIn, setLoggedIn, count, setCount} = props
+    const {cookieValue, welcome, setWelcome, loggedIn, setLoggedIn, count} = props
     const navigate = useNavigate()
     // const userRef = useRef()
     
     useEffect(() => {
         // setCount(count+1)
-        setWelcome(welcome)
-        console.log(`nav ue`, count)
+        // setWelcome(welcome)
+        if(cookieValue){
+            setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
+        }
+        // console.log(`nav ue`, count2)
     }, [count])
     
     // console.log(user?.current)
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, {withCredentials: true})
             .then(res=>{
-                console.log(res.data)
+                // console.log(res.data)
                 navigate('/')
                 setWelcome("Guest")
                 setLoggedIn(false)
