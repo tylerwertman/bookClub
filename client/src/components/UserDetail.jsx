@@ -52,8 +52,8 @@ const UserDetail = (props) => {
             <h4>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h4>
             <h4>Favorite Books:</h4>
             {
-                oneUser?.booksFavorited?.map((favs, i)=>{
-                    return <h6 key={i}>{favs}</h6>
+                oneUser?.booksFavorited?.map((usersFavBooks, i)=>{
+                    return <h6 key={i}>{usersFavBooks}</h6>
 
                 })
             }

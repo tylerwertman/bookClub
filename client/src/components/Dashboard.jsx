@@ -45,11 +45,12 @@ const Dashboard = (props) => {
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
 
+            favoritedBy.pop()
             // after posting book to DB, set the favoritedBy and booksFavorited to put those to the book and user objects
-            favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)                                          // works
+            favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)                          // works
             // setFavoritedBy([(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
             booksFavorited.push(res.data.book.title)
-            // setBooksFavorited([...booksFavorited, res.data.book.title])                                                                                           //doesn't retain next entry on userdetail page
+            // setBooksFavorited([...booksFavorited, res.data.book.title])                                                      //doesn't retain next entry on userdetail page
 
             //axios put to favs array in books object
             axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
@@ -59,7 +60,7 @@ const Dashboard = (props) => {
                 setFavoritedBy([])
                 // favoritedBy.pop()
                 // console.log(favoritedBy)
-                // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
+                navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
         })
             .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
 

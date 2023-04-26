@@ -105,8 +105,8 @@ const BookDetail = (props) => {
                 <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>
                 <h4>Favorited By:</h4>
                 {
-                    favoritedBy?.map((fav, i) => {
-                        return <h5 key={i}>{fav}</h5>
+                    favoritedBy?.map((booksFavedBy, i) => {
+                        return <h5 key={i}>{booksFavedBy}</h5>
                     })
                 }
             </div>
