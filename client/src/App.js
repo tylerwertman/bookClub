@@ -19,6 +19,8 @@ function App() {
   const [welcome, setWelcome] = useState()
   const [count, setCount] = useState(0)
   const [user, setUser] = useState()
+  const [favoritedBy, setFavoritedBy] = useState([])
+  const [booksFavorited, setBooksFavorited] = useState([])
   const cookieValue = Cookies.get('userToken');
   
   useEffect(() => {
@@ -28,6 +30,7 @@ function App() {
     if(cookieValue){
       setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
       setUser(jwtdecode(cookieValue))
+      console.log(jwtdecode(cookieValue))
       setLoggedIn(true)
     }else{
       setWelcome("Guest")
@@ -36,14 +39,14 @@ function App() {
   // console.log(`user`, user)
   return (
     <div className="App">
-      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount}/>
+      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount}/>}/>
+        <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
-        <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user}/>}/>
-        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} count={count} setCount={setCount} user={user} setLoggedIn={setLoggedIn}/>}/>
+        <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited}/>}/>
+        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} count={count} setCount={setCount} user={user} setLoggedIn={setLoggedIn} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited}/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
         <Route path="/users/undefined" element={<UserNotFound/>}/>
         <Route path="*" element={<NotFound/>}/>

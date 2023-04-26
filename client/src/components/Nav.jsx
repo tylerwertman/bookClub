@@ -5,7 +5,7 @@ import jwtdecode from 'jwt-decode'
 
 
 const Nav = (props) => {
-    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count} = props
+    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited} = props
 
     const navigate = useNavigate()
     
@@ -18,7 +18,15 @@ const Nav = (props) => {
     const clearBooks = () => {
         axios.delete(`http://localhost:8000/api/books/`)
         .then(res=>{
-            setCount(count+1)            
+            setCount(count+1)
+            setBooksFavorited([])
+            console.log(user._id)
+            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            .then(res=>{
+                console.log(`success clearing favs in user on clearBooks`, `favorites`, booksFavorited)
+                // setBooksFavorited([...booksFavorited])
+            })
+            .catch(err=>console.log(`errer clearing favs in user on clearBooks`, `favorites`, booksFavorited))
         })
         .catch(err=>console.log(err))
     }

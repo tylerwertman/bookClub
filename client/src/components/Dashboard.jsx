@@ -9,13 +9,12 @@ import jwtdecode from 'jwt-decode'
 // adding consecutive books makes consecutive favs...fix that.
 
 const Dashboard = (props) => {
-    const {cookieValue, user, count, setCount} = props
+    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited} = props
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
-    const [favoritedBy, setFavoritedBy] = useState([])
-    const [booksFavorited, setBooksFavorited] = useState([])
+
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -47,7 +46,7 @@ const Dashboard = (props) => {
 
             // after posting book to DB, set the favoritedBy and booksFavorited to put those to the book and user objects
             favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)                                          // works
-            // setFavoritedBy([...favoritedBy, (jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
+            // setFavoritedBy([(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
             booksFavorited.push(res.data.book.title)
             // setBooksFavorited([...booksFavorited, res.data.book.title])                                                                                           //doesn't retain next entry on userdetail page
 
@@ -124,7 +123,7 @@ const Dashboard = (props) => {
                     {
                         bookList.map((book, index) => {
                             return <div key={index}>
-                                <Link to={`/books/${book?._id}`}>{book?.title}</Link>
+                                <Link to={`/books/${book?._id}`}>{book?.title} by {book?.author}</Link>
                                 {bookList[index]?.addedBy?._id ? <p>(added by <Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p> : <p>(added by Deleted User)</p>}
                             </div>
                         })

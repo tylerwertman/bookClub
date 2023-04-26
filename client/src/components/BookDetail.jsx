@@ -3,12 +3,10 @@ import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
 
 const BookDetail = (props) => {
-    const {welcome, user} = props
+    const {welcome, user, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
-    const [favoritedBy, setFavoritedBy] = useState([])
-    const [booksFavorited, setBooksFavorited] = useState([])
     const [filteredFavs, setFilteredFavs] = useState([])
     const hideFav = "btn btn-success"
     const hideUnfav = "btn btn-danger"
@@ -19,7 +17,7 @@ const BookDetail = (props) => {
         .then(res=>{
             setOneBook(res.data.book)
             setFavoritedBy([...res.data.book.favoritedBy])
-            console.log(`bDetail favoritedBy`, res.data.book.favoritedBy)
+            // console.log(`bDetail favoritedBy`, res.data.book.favoritedBy)
             // console.log(`useeffect booksFavorited res`, res.data.book)
             // console.log(`useeffect favs`, favoritedBy)
             
@@ -48,7 +46,7 @@ const BookDetail = (props) => {
         // console.log(oneBook)
         console.log(user)
         if(!favoritedBy?.includes(welcome)){
-            console.log(`favorite fn 1`, favoritedBy)
+            // console.log(`favorite fn 1`, favoritedBy)
             favoritedBy?.push(welcome)
 
             //put to books object
@@ -61,7 +59,7 @@ const BookDetail = (props) => {
             console.log(`book favorite fn 2`, favoritedBy)
             
             // put to user object
-            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
             .then(res=>{
                 console.log(`user fav success?`, `favorites`, booksFavorited)
             })

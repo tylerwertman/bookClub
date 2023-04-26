@@ -4,8 +4,8 @@ import {useParams, useNavigate} from 'react-router-dom'
 
 const UserDetail = (props) => {
     const {id} = useParams()
-    const {welcome, setWelcome, count, setCount, user, setLoggedIn} = props
-    const [booksFavorited, setBooksFavorited] = useState([])
+    const {welcome, setWelcome, count, setCount, user, setLoggedIn, booksFavorited, setBooksFavorited} = props
+    // const [booksFavorited, setBooksFavorited] = useState([])
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
     // const [favs, setFavs] = useState([])
@@ -53,7 +53,7 @@ const UserDetail = (props) => {
             <h4>Favorite Books:</h4>
             {
                 oneUser?.booksFavorited?.map((favs, i)=>{
-                    return <h5 key={i}>{favs}</h5>
+                    return <h6 key={i}>{favs}</h6>
 
                 })
             }
