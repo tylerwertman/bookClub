@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import withAuth from './WithAuth'
 
 const EditBook = () => {
     const {id} = useParams()
@@ -67,4 +68,4 @@ const EditBook = () => {
     )
 }
 
-export default EditBook
+export default withAuth(EditBook)

@@ -21,13 +21,14 @@ const Nav = (props) => {
             setCount(count+1)
             setBooksFavorited([])
             console.log(user._id)
-            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: booksFavorited})
+            axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: [], booksAdded: []})
             .then(res=>{
                 console.log(`success clearing favs in user on clearBooks`, `favorites`, booksFavorited)
                 // setBooksFavorited([...booksFavorited])
             })
             .catch(err=>console.log(`errer clearing favs in user on clearBooks`, `favorites`, booksFavorited))
         })
+            
         .catch(err=>console.log(err))
     }
 

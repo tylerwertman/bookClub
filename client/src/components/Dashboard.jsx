@@ -2,15 +2,14 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import jwtdecode from 'jwt-decode'
+import withAuth from './WithAuth'
 
 // TO DO LIST
 
 // privatize /Dashboard
-// adding consecutive books makes consecutive favs...fix that.
-// new book is favorited by all reg users ...fix that
 
 const Dashboard = (props) => {
-    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited} = props
+    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
@@ -21,8 +20,12 @@ const Dashboard = (props) => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
             setBookList(res.data.book)
+            // if(favoritedBy.length>0){
+                setFavoritedBy([])
+                
+            // }
+
             // setBooksFavorited([...booksFavorited])
-            // console.log(booksFavorited)
             // console.log(`booklist`, res.data.book)
         })
         .catch(err=>console.log(err))
@@ -45,13 +48,19 @@ const Dashboard = (props) => {
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
 
-            favoritedBy.pop()
+            // favoritedBy.pop()
+            // console.log(favoritedBy)
+            // setFavoritedBy([])
+            // console.log(favoritedBy)
             // after posting book to DB, set the favoritedBy and booksFavorited to put those to the book and user objects
             favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)                          // works
-            // setFavoritedBy([(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
+            // setFavoritedBy([...favoritedBy, (jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
             booksFavorited.push(res.data.book.title)
             // setBooksFavorited([...booksFavorited, res.data.book.title])                                                      //doesn't retain next entry on userdetail page
+            booksAdded.push(res.data.book.title)
 
+
+            console.log(res.data.book._id)
             //axios put to favs array in books object
             axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
             .then(res=>{
@@ -60,7 +69,7 @@ const Dashboard = (props) => {
                 setFavoritedBy([])
                 // favoritedBy.pop()
                 // console.log(favoritedBy)
-                navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
+                // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
         })
             .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
 
@@ -72,6 +81,14 @@ const Dashboard = (props) => {
             })
             .catch(err=>console.log(`errer putting to favs in user obj`, `favorites`, booksFavorited))
         
+            // axios put to added array in user object 
+            axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksAdded: booksAdded})
+            .then(res=>{
+                console.log(`success putting to added in user`, `added`, booksAdded)
+                // setBooksFavorited([...booksFavorited])
+            })
+            .catch(err=>console.log(`errer putting to favs in user obj`, `favorites`, booksFavorited))
+
             setOneBook({
                 title: "",
                 author: ""
@@ -136,4 +153,5 @@ const Dashboard = (props) => {
     )
 }
 
-export default Dashboard
+export default withAuth(Dashboard)
+// export default Dashboard

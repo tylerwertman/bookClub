@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
+import withAuth from './WithAuth'
 
 const BookDetail = (props) => {
     const {welcome, user, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited} = props
@@ -114,4 +115,4 @@ const BookDetail = (props) => {
     )
 }
 
-export default BookDetail
+export default withAuth(BookDetail)

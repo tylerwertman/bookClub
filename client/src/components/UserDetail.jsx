@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import {useParams, useNavigate} from 'react-router-dom'
+import withAuth from './WithAuth'
 
 const UserDetail = (props) => {
     const {id} = useParams()
-    const {welcome, setWelcome, count, setCount, user, setLoggedIn, booksFavorited, setBooksFavorited} = props
+    const {welcome, setWelcome, count, setCount, user, setLoggedIn, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props
     // const [booksFavorited, setBooksFavorited] = useState([])
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
@@ -14,8 +15,10 @@ const UserDetail = (props) => {
         .then(res=>{
             console.log(res.data.user)
             setOneUser(res.data.user)
-            setBooksFavorited([...res.data.user.booksFavorited])
-            booksFavorited.push(res.data.user.booksFavorited)
+            setBooksFavorited([])
+            setBooksFavorited([...booksFavorited])
+            setBooksAdded([...res.data.user.booksAdded])
+            // booksFavorited.push(res.data.user.booksFavorited)
             console.log(`uDetail booksFavorited`, res.data.user.booksFavorited)
             console.log(oneUser)
             // setFavorites(res.data.book.favoritedBy)
@@ -23,7 +26,7 @@ const UserDetail = (props) => {
         })
         .catch(err=>console.log(err))
         
-    }, []);
+    }, [count]);
     // console.log(oneUser.booksFavorited[0])
 
     const deleteAccount = () => {
@@ -66,4 +69,4 @@ const UserDetail = (props) => {
     )
 }
 
-export default UserDetail
+export default withAuth(UserDetail)
