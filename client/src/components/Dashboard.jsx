@@ -7,6 +7,7 @@ import jwtdecode from 'jwt-decode'
 
 // privatize /Dashboard
 // adding consecutive books makes consecutive favs...fix that.
+// new book is favorited by all reg users ...fix that
 
 const Dashboard = (props) => {
     const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited} = props
