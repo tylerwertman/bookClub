@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 const withAuth = (Component) => {
 
     const cookieValue = Cookies.get('userToken');
-    console.log(cookieValue)
+    // console.log(cookieValue)
 
     let isAuthenticated
 

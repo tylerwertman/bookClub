@@ -3,15 +3,13 @@ const User = require("../models/user.model")
 
 module.exports.findAllBooks = (req, res) => {
     Book.find()
-        .populate("addedBy")
-        // .populate("favoritedBy")
+        .populate("addedBy favoritedBy")
         .then(allBooks => res.json({ book: allBooks }))
         .catch(err => res.status(400).json({ message: "Something went worng finding all books", error: err }))
 }
 module.exports.findOneBook = (req, res) => {
     Book.findById(req.params.id)
-        .populate("addedBy")
-        // .populate("favoritedBy")
+        .populate("addedBy favoritedBy")
         .then(oneBook => res.json({ book: oneBook }))
         .catch(err => res.status(400).json({ message: "Something went worng finding one book", error: err }))
 }

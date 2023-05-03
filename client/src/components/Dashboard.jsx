@@ -5,8 +5,7 @@ import jwtdecode from 'jwt-decode'
 import withAuth from './WithAuth'
 
 // TO DO LIST
-
-// privatize /Dashboard
+// fix favs on userdetail resetting
 
 const Dashboard = (props) => {
     const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props
@@ -22,6 +21,9 @@ const Dashboard = (props) => {
             setBookList(res.data.book)
             // if(favoritedBy.length>0){
                 setFavoritedBy([])
+                // setBooksFavorited([])
+                // setBooksAdded([])
+                console.log(`all 3 UE`, `favoritedBy`, favoritedBy, `booksFavorited`, booksFavorited, `booksAdded`, booksAdded)
                 
             // }
 
@@ -39,6 +41,7 @@ const Dashboard = (props) => {
             addedBy: user?._id
         })
     }
+
     const submitHandler = (e) => {
         e.preventDefault()
         axios.post('http://localhost:8000/api/books', oneBook)
@@ -49,18 +52,16 @@ const Dashboard = (props) => {
             setBookList([...bookList, res.data.book])
 
             // favoritedBy.pop()
-            // console.log(favoritedBy)
             // setFavoritedBy([])
-            // console.log(favoritedBy)
-            // after posting book to DB, set the favoritedBy and booksFavorited to put those to the book and user objects
-            favoritedBy.push(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)                          // works
-            // setFavoritedBy([...favoritedBy, (jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)])                     //doesnt work?
-            booksFavorited.push(res.data.book.title)
-            // setBooksFavorited([...booksFavorited, res.data.book.title])                                                      //doesn't retain next entry on userdetail page
-            booksAdded.push(res.data.book.title)
 
+            // after posting book to DB, set the favoritedBy, booksFavorited, & booksAdded to put those to the book and user objects
+            favoritedBy.push(jwtdecode(cookieValue)._id)
+            booksFavorited.push(res.data.book._id)
+            booksAdded.push(res.data.book._id)
+            console.log(`all 3 onSubmit`, favoritedBy, booksFavorited, booksAdded)
 
             console.log(res.data.book._id)
+
             //axios put to favs array in books object
             axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
             .then(res=>{

@@ -5,7 +5,7 @@ import jwtdecode from 'jwt-decode'
 
 
 const Nav = (props) => {
-    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited} = props
+    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, setFavoritedBy} = props
 
     const navigate = useNavigate()
     
@@ -40,6 +40,7 @@ const Nav = (props) => {
                 setWelcome("Guest")
                 setLoggedIn(false)
                 setUser()
+                setFavoritedBy([])
             })
             .catch(err=>console.log(err))
         console.log("logging out")

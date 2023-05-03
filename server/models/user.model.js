@@ -23,14 +23,14 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minlength: [8, "Password must be 8 characters or longer"]
     },
-    booksAdded: {
-        type: [mongoose.Schema.Types.ObjectId],
+    booksAdded: [{
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Book"
-    },
-    booksFavorited: {
-        type: []
-        // ref: "Book"
-    }
+    }],
+    booksFavorited: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book"
+    }]
 }, { timestamps: true });
 
 UserSchema.virtual('confirmPassword')

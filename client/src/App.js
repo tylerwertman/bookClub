@@ -41,7 +41,7 @@ function App() {
   // console.log(`user`, user)
   return (
     <div className="App">
-      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited}/>
+      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} setFavoritedBy={setFavoritedBy}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>

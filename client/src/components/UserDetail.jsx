@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import {useParams, useNavigate} from 'react-router-dom'
+import {useParams, useNavigate, Link} from 'react-router-dom'
 import withAuth from './WithAuth'
 
 const UserDetail = (props) => {
@@ -15,7 +15,7 @@ const UserDetail = (props) => {
         .then(res=>{
             console.log(res.data.user)
             setOneUser(res.data.user)
-            setBooksFavorited([])
+            // setBooksFavorited([])
             setBooksFavorited([...booksFavorited])
             setBooksAdded([...res.data.user.booksAdded])
             // booksFavorited.push(res.data.user.booksFavorited)
@@ -50,19 +50,22 @@ const UserDetail = (props) => {
     }
     return (
         <div className='mt-5'>
-            <h2>Username: {user?.firstName} {user?.lastName}</h2>
-            <h4>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h4>
-            <h4>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h4>
+            <h2>User: {user?.firstName} {user?.lastName}</h2>
+            <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
+            <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             <h4>Favorite Books:</h4>
             {
                 oneUser?.booksFavorited?.map((usersFavBooks, i)=>{
-                    return <h6 key={i}>{usersFavBooks}</h6>
+                    return <><h6 key={i}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6></>
 
                 })
             }
             <h4>Added Books:</h4>
             {
+                oneUser?.booksAdded?.map((usersAddedBooks, i)=>{
+                    return <h6 key={i}>{usersAddedBooks?.title}</h6>
 
+                })
             }
             {welcome === (user?.firstName + " " + user?.lastName) ? <button className='btn btn-dark' onClick={deleteAccount}>Delete Account</button> : null}
         </div>
