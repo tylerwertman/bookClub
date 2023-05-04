@@ -61,7 +61,7 @@ const Nav = (props) => {
             <h1 style={{display:'inline'}} onClick={(navHome)}>Book Club</h1>
             {
                 welcome!=="Guest" ?
-                <><h4 style={{display:'inline'}}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></> :
+                <><h4 style={{display:'inline'}}>Welcome, </h4><Link to={`/users/${user?._id}`} onClick={()=>{setCount(count+1)}}>{welcome}</Link></> :
                 <h4 style={{display:'inline'}}>Welcome, Guest</h4>
             }
             </div>

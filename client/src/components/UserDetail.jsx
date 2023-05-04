@@ -16,7 +16,7 @@ const UserDetail = (props) => {
             console.log(res.data.user)
             setOneUser(res.data.user)
             // setBooksFavorited([])
-            setBooksFavorited([...booksFavorited])
+            setBooksFavorited([...res.data.user.booksFavorited])
             setBooksAdded([...res.data.user.booksAdded])
             // booksFavorited.push(res.data.user.booksFavorited)
             console.log(`uDetail booksFavorited`, res.data.user.booksFavorited)
@@ -55,14 +55,14 @@ const UserDetail = (props) => {
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             <h4>Favorite Books:</h4>
             {
-                oneUser?.booksFavorited?.map((usersFavBooks, i)=>{
+                booksFavorited?.map((usersFavBooks, i)=>{
                     return <><h6 key={i}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6></>
 
                 })
             }
             <h4>Added Books:</h4>
             {
-                oneUser?.booksAdded?.map((usersAddedBooks, i)=>{
+                booksAdded?.map((usersAddedBooks, i)=>{
                     return <h6 key={i}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
 
                 })
