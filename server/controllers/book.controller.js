@@ -25,8 +25,11 @@ module.exports.createBook = (req, res) => {
 }
 module.exports.updateBook = (req, res) => {
     Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-        // .populate("favoritedBy")
-        .then(updatedBook => res.json({ book: updatedBook }))
+        .populate("addedBy favoritedBy")
+        .then(updatedBook => {
+            res.json({ book: updatedBook })
+            console.log("Successfully updated a book in User.books", updatedBook)
+        })
         .catch(err => res.status(400).json({ message: "Something went worng updating a book", error: err }))
 }
 module.exports.deleteBook = (req, res) => {

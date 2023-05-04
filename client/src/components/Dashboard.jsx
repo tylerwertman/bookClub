@@ -7,6 +7,8 @@ import withAuth from './WithAuth'
 // TO DO LIST
 // remove book from users' added/favs on bookDelete
 // fix fav/unfav
+// on ANOTHER user's page, the user links dont work
+// when on a user page, clicking the current username in nav changes URL but not the page content until refresh
 
 const Dashboard = (props) => {
     const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props

@@ -61,12 +61,13 @@ module.exports.findOneUser = (req, res) => {
 }
 module.exports.createUser = (req, res) => {
     User.create(req.body)
-    .then(newAuthor => res.json({user: newUser}))
+    .then(newUser => res.json({user: newUser}))
     .catch(err => res.status(400).json({message: "Something went worng creating a user", error: err}))
 }
 module.exports.updateUser = (req, res) => {
     User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
-    .then(updatedAuthor => res.json({user: updatedUser}))
+    .populate("booksAdded booksFavorited")
+    .then(updatedUser => res.json({user: updatedUser}))
     .catch(err => res.status(400).json({message: "Something went worng updating a user", error: err}))
 }
 module.exports.deleteUser = (req, res) => {

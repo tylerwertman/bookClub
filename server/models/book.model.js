@@ -21,9 +21,6 @@ const BookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }]
-    // favoritedBy: {
-    //     type: []
-    // }
 },
     { timestamps: true }
 );

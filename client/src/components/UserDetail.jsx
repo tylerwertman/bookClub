@@ -50,7 +50,7 @@ const UserDetail = (props) => {
     }
     return (
         <div className='mt-5'>
-            <h2>User: {user?.firstName} {user?.lastName}</h2>
+            <h2>User: {oneUser?.firstName} {oneUser?.lastName}</h2>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             <h4>Favorite Books:</h4>
