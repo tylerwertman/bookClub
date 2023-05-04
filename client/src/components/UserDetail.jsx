@@ -63,7 +63,7 @@ const UserDetail = (props) => {
             <h4>Added Books:</h4>
             {
                 oneUser?.booksAdded?.map((usersAddedBooks, i)=>{
-                    return <h6 key={i}>{usersAddedBooks?.title}</h6>
+                    return <h6 key={i}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
 
                 })
             }

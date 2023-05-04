@@ -4,14 +4,14 @@ import {useParams, useNavigate, Link} from 'react-router-dom'
 import withAuth from './WithAuth'
 
 const BookDetail = (props) => {
-    const {welcome, user, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited} = props
+    const {welcome, user, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, count, setCount} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
     const [filteredFavs, setFilteredFavs] = useState([])
     const hideFav = "btn btn-success"
     const hideUnfav = "btn btn-danger"
-
+    const bookFavByContainsLoggedInUser = favoritedBy.some(bookObj => bookObj._id === user._id);
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
@@ -31,7 +31,7 @@ const BookDetail = (props) => {
         })
         .catch(err=>console.log(err))
     
-    }, []);
+    }, [count]);
 
     const removeBook = () => {
         axios.delete(`http://localhost:8000/api/books/${id}`)
@@ -41,6 +41,7 @@ const BookDetail = (props) => {
             //remove book from creating user's addedBy
     })
         .catch(err=>console.log(err))
+        
     }
     const editBook = (e) => {
         navigate(`/books/${id}/edit`)
@@ -50,49 +51,43 @@ const BookDetail = (props) => {
         // console.log(oneBook)
         // console.log(user)
         console.log(oneBook)
-        if(!favoritedBy?.includes(user?._id)){
-            console.log(`favorite fn 1`, favoritedBy)
-            favoritedBy?.push(user?._id)
-            // setFavoritedBy([...favoritedBy, user.id])
-            console.log(`favorite fn 2`, favoritedBy)
-            //put favBy to books object
-            axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favoritedBy})
-            .then(res=>{
-                console.log(`user added to book obj`, `favoritedBy`, favoritedBy)
-                navigate(`/books/${id}`)
-        })
-            .catch(err=>console.log(`user to book obj put error`, `favoritedBy`, favoritedBy))
-            
-            // put booksFaved to user object
-            // console.log(user._id)
-            // console.log(res.data)
-            // console.log(booksFavorited)
-            setBooksFavorited([...booksFavorited, oneBook.title])
-            console.log(booksFavorited)
-            console.log(user.booksFavorited)
-            axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: "booksFavorited"})
-            .then(res=>{
-                console.log(`book added to user obj`, `favorites`, booksFavorited)
-                setBooksFavorited([])
+            if(!bookFavByContainsLoggedInUser){
+                
+                //update favBy and put favBy to books object
+                favoritedBy?.push(user?._id)
+                axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favoritedBy})
+                .then(res=>{
+                    console.log(`user added to book obj`, `favoritedBy`, favoritedBy)
+                    navigate(`/books/${id}`)
+                    setCount(count+1)
             })
-            .catch(err=>console.log(`book to user put error`, `booksFavorited`, booksFavorited))
-        }
+                .catch(err=>console.log(`user to book obj put error`, `favoritedBy`, favoritedBy))
+                
+                // update booksFaved and put booksFaved to user object
+                booksFavorited.push(oneBook.title)
+                axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: "booksFavorited"})
+                .then(res=>{
+                    console.log(`book added to user obj`, `favorites`, booksFavorited)
+                    setBooksFavorited([])
+                })
+                .catch(err=>console.log(`book to user put error`, `booksFavorited`, booksFavorited))
+            }
         }
 
 
     const unfavoriteBook = () => {
-        const filteredFavBy = favoritedBy.filter(user => {return user!==user?._id})
-        console.log(`unfav filtered`, filteredFavs, filteredFavBy)
-        setFavoritedBy(filteredFavs)
-        // console.log(`unfavorite fn 1`, `favoritedBy`, favorites, `filteredFavs`, filteredFavs)
+        // remove user from list of book's favs and push filtered favoritedBy array to book obj
+        const filteredFavBy = oneBook?.favoritedBy?.filter(userObj => userObj._id!==user?._id)
         axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavBy})
         .then(res=>{
-            console.log(`UNfav success? book obj`, `favoritedBy`, favoritedBy, `filteredFavs`, filteredFavBy)
+            console.log(`UNfav success? updated book obj to`, filteredFavBy)
             navigate(`/books/${id}`)
+            setCount(count+1)
+
         })
         .catch(err=>console.log(`UNfav put error book obj`, `favoritedBy`, favoritedBy, `filteredFavs`, filteredFavBy))
 
-        const filteredFavBooks = booksFavorited.filter(book => {return book!==oneBook.title})
+        const filteredFavBooks = user?.booksFavorited?.filter(book => {return book!==oneBook.title})
         axios.put(`http://localhost:8000/api/users/${id}`, {booksFavorited: filteredFavBooks})
         .then(res=>{
             console.log(`UNfav success? user obj`, `favoritedBy`, favoritedBy, `filteredFavs`, filteredFavs)
@@ -108,7 +103,8 @@ const BookDetail = (props) => {
                 <br/>
                 <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
                 { // fav/unfav
-                    favoritedBy?.includes(user?._id) ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
+                
+                    bookFavByContainsLoggedInUser ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp;</> : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
                 }
                 { // edit
                     (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
@@ -126,7 +122,7 @@ const BookDetail = (props) => {
                 <h4>Favorited By:</h4>
                 {
                     favoritedBy?.map((booksFavedBy, i) => {
-                        return <h5 key={i}>{booksFavedBy.firstName}{booksFavedBy.lastName}</h5>
+                        return <h5 key={i}><Link to={`/users/${user?._id}`}>{booksFavedBy.firstName} {booksFavedBy.lastName}</Link></h5>
                     })
                 }
             </div>

@@ -5,7 +5,8 @@ import jwtdecode from 'jwt-decode'
 import withAuth from './WithAuth'
 
 // TO DO LIST
-// fix favs on userdetail resetting
+// remove book from users' added/favs on bookDelete
+// fix fav/unfav
 
 const Dashboard = (props) => {
     const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props
@@ -50,9 +51,6 @@ const Dashboard = (props) => {
             console.log(res.data.book);
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
-
-            // favoritedBy.pop()
-            // setFavoritedBy([])
 
             // after posting book to DB, set the favoritedBy, booksFavorited, & booksAdded to put those to the book and user objects
             favoritedBy.push(jwtdecode(cookieValue)._id)
