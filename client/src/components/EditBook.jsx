@@ -25,7 +25,7 @@ const EditBook = () => {
         e.preventDefault();
         axios.put(`http://localhost:8000/api/books/${id}`, oneBook)
             .then(res=>{
-                navigate("/dashboard")
+                navigate(`/books/${id}`)
             })
             .catch(err=>{
                 setErrors({

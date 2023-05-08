@@ -32,7 +32,7 @@ function App() {
     if(cookieValue){
       setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
       setUser(jwtdecode(cookieValue))
-      console.log(jwtdecode(cookieValue))
+      // console.log(jwtdecode(cookieValue))
       setLoggedIn(true)
     }else{
       setWelcome("Guest")
@@ -47,8 +47,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
-        <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} cookieValue={cookieValue} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} count={count} setCount={setCount} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
-        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} count={count} setCount={setCount} user={user} setLoggedIn={setLoggedIn} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
+        <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} cookieValue={cookieValue} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
+        <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setCount={setCount} setLoggedIn={setLoggedIn} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
         <Route path="/books/:id/edit" element={<EditBook/>}/>
         <Route path="/users/undefined" element={<UserNotFound/>}/>
         {/* <Route element={<withAuth/>}/> */}

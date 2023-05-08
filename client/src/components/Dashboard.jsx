@@ -5,9 +5,8 @@ import jwtdecode from 'jwt-decode'
 import withAuth from './WithAuth'
 
 // TO DO LIST
-// remove book from users' added/favs on bookDelete
+// unfav is removing all favs
 // on ANOTHER user's page, the user links dont work
-// when on a user page, clicking the current username in nav changes URL but not the page content until refresh
 
 const Dashboard = (props) => {
     const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props
@@ -61,19 +60,21 @@ const Dashboard = (props) => {
 
             console.log(res.data.book._id)
 
+
             //axios put to favs array in books object
             axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
             .then(res=>{
                 console.log(`success putting user to favs in book obj`)
                 // booksFavorited.pop()
-                setFavoritedBy([])
+                // setFavoritedBy([])
                 // favoritedBy.pop()
                 // console.log(favoritedBy)
                 // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
         })
             .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
 
-            // axios put to favs array in user object 
+
+            // axios put to favs array in user object
             axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
             .then(res=>{
                 console.log(`success putting to favs in user`, `favorites`, booksFavorited)
@@ -81,7 +82,8 @@ const Dashboard = (props) => {
             })
             .catch(err=>console.log(`errer putting to favs in user obj`, `favorites`, booksFavorited))
         
-            // axios put to added array in user object 
+
+            // axios put to added array in user object
             axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksAdded: booksAdded})
             .then(res=>{
                 console.log(`success putting to added in user`, `added`, booksAdded)

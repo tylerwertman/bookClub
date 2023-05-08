@@ -13,14 +13,15 @@ const UserDetail = (props) => {
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
         .then(res=>{
-            console.log(res.data.user)
+            // console.log(res.data.user)
             setOneUser(res.data.user)
-            // setBooksFavorited([])
-            setBooksFavorited([...res.data.user.booksFavorited])
+            setBooksFavorited([])
+            // setBooksFavorited([...res.data.user.booksFavorited])
+            console.log(`uDetail UE booksFavorited`, booksFavorited)
             setBooksAdded([...res.data.user.booksAdded])
             // booksFavorited.push(res.data.user.booksFavorited)
             console.log(`uDetail booksFavorited`, res.data.user.booksFavorited)
-            console.log(oneUser)
+            // console.log(oneUser)
             // setFavorites(res.data.book.favoritedBy)
             // console.log(res)
         })
@@ -55,15 +56,15 @@ const UserDetail = (props) => {
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             <h4>Favorite Books:</h4>
             {
-                booksFavorited?.map((usersFavBooks, i)=>{
+                oneUser?.booksFavorited?.map((usersFavBooks, i)=>{
                     return <><h6 key={i}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6></>
 
                 })
             }
             <h4>Added Books:</h4>
             {
-                booksAdded?.map((usersAddedBooks, i)=>{
-                    return <h6 key={i}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
+                oneUser?.booksAdded?.map((usersAddedBooks, i)=>{
+                    return <><h6 key={i}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6></>
 
                 })
             }

@@ -25,6 +25,7 @@ const Nav = (props) => {
             .then(res=>{
                 console.log(`success clearing favs in user on clearBooks`, `favorites`, booksFavorited)
                 // setBooksFavorited([...booksFavorited])
+                navigate("/dashboard")
             })
             .catch(err=>console.log(`errer clearing favs in user on clearBooks`, `favorites`, booksFavorited))
         })
