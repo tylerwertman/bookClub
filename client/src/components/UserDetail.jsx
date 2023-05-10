@@ -5,7 +5,7 @@ import withAuth from './WithAuth'
 
 const UserDetail = (props) => {
     const {id} = useParams()
-    const {welcome, setWelcome, count, setCount, user, setLoggedIn, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded, colorToggleStyle} = props
+    const {welcome, setWelcome, count, setCount, user, setLoggedIn, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded, darkMode} = props
     // const [booksFavorited, setBooksFavorited] = useState([])
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
@@ -68,7 +68,7 @@ const UserDetail = (props) => {
 
                 })
             }
-            {welcome === (user?.firstName + " " + user?.lastName) ? <button className={colorToggleStyle.b2r} onClick={deleteAccount}>Delete Account</button> : null}
+            {welcome === (user?.firstName + " " + user?.lastName) ? <button className={darkMode?"btn btn-dark":"btn btn-danger"} onClick={deleteAccount}>Delete Account</button> : null}
         </div>
     )
 }

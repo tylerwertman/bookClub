@@ -139,7 +139,7 @@ const Dashboard = (props) => {
                     {
                         bookList.map((book, index) => {
                             return <div key={index}>
-                                <Link to={`/books/${book?._id}`}>{book?.title} by {book?.author}</Link>
+                                <><Link to={`/books/${book?._id}`}>{book?.title}</Link> by {book?.author}</>
                                 {bookList[index]?.addedBy?._id ? <p>(added by <Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p> : <p>(added by Deleted User)</p>}
                             </div>
                         })

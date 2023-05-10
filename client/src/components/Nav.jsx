@@ -7,9 +7,7 @@ import NightModeToggle from './NightModeToggle'
 
 const Nav = (props) => {
     const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, favoritedBy, setFavoritedBy, setBooksAdded, darkModeStyle, setDarkModeStyle, darkMode, setDarkMode } = props
-
     const navigate = useNavigate()
-    const darkModeValue = Cookies.get('darkMode')
 
     useEffect(() => {
         if (cookieValue) {
@@ -19,35 +17,16 @@ const Nav = (props) => {
     }, [count])
 
     useEffect(() => {
-        const storedDarkMode = Cookies.get('darkMode');
-        console.log(`storedDM`, storedDarkMode)
-        setDarkMode(storedDarkMode)
-        if (!storedDarkMode) {
+        const darkModeCookie = Cookies.get('darkMode');
+        console.log(darkModeCookie, darkMode)
+        setDarkMode(darkModeCookie === "true");
+        if (darkModeCookie===true) {
             document.body.style.background = 'rgb(33, 37, 41)';
-            setDarkModeStyle({
-                nav: "navDark",
-                mainDiv: "row mainDivDark",
-                formGroup: "col-md-6 offset-1 bg-dark text-light",
-                btnClass: "btn btn-light",
-                btnText: "☀️",
-                app: "AppDark",
-                b2r: "btn btn-danger",
-                state: false
-            })
         } else {
             document.body.style.background = 'white';
-            setDarkModeStyle({
-                nav: "navLight",
-                mainDiv: "row mainDivLight",
-                formGroup: "col-md-6 offset-1",
-                btnClass: "btn btn-dark",
-                btnText: "🌙",
-                app: "AppLight",
-                b2r: "btn btn-dark",
-                state: true
-            })
         }
-    }, [darkMode.state])
+    }, [])
+
     const clearBooks = () => {
         axios.delete(`http://localhost:8000/api/books/`)
             .then(res => {
@@ -100,14 +79,8 @@ const Nav = (props) => {
 
         if (!updatedDarkMode) {
             document.body.style.background = 'rgb(33, 37, 41)';
-            setDarkModeStyle({
-                b2r: 'btn btn-danger',
-            });
         } else {
             document.body.style.background = 'white';
-            setDarkModeStyle({
-                b2r: 'btn btn-dark',
-            });
         }
     }
 
@@ -122,7 +95,7 @@ return (
             }
         </div>
         <div>
-            <button className='btn btn-dark' onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp;
+            <button className={darkMode?"btn btn-dark":"btn btn-danger"} onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp;
 
             {
                 (welcome !== "Guest") ?
