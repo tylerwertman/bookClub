@@ -67,7 +67,7 @@ const Nav = (props) => {
     }
 
     const colorToggle = () => {
-        if(colorToggleStyle.text === "Dark Mode"){
+        if(colorToggleStyle.btnText === "Dark Mode"){
             document.body.style = 'background: rgb(33,37,41);'
             setNavStyle("navDark")
             // setColorToggleState({
@@ -79,8 +79,10 @@ const Nav = (props) => {
             setColorToggleStyle({
                 mainDiv: "row mainDivDark",
                 formGroup: "col-md-6 offset-1 ",
-                class: "btn btn-light",
-                text: "Light Mode"
+                btnClass: "btn btn-light",
+                btnText: "Light Mode",
+                app: "AppDark",
+                b2r: "btn btn-danger"
                 })
             
         }else{
@@ -93,8 +95,10 @@ const Nav = (props) => {
             setColorToggleStyle({
                 mainDiv: "row mainDivLight",
                 formGroup: "col-md-6 offset-1",
-                class: "btn btn-dark",
-                text: "Dark Mode"
+                btnClass: "btn btn-dark",
+                btnText: "Dark Mode",
+                app: "AppLight",
+                b2r: "btn btn-dark"
                 })
             
         }
@@ -119,7 +123,7 @@ const Nav = (props) => {
                 :
                 <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link></>
                 }
-                <button className={colorToggleStyle.class} onClick={colorToggle}>{colorToggleStyle.text}</button>
+                <button className={colorToggleStyle.btnClass} onClick={colorToggle}>{colorToggleStyle.btnText}</button>
             </div>
         </nav>
     )

@@ -6,7 +6,7 @@ import jwtdecode from 'jwt-decode'
 
 
 const BookDetail = (props) => {
-    const {welcome, user, cookieValue, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, count, setCount, booksAdded, setBooksAdded} = props
+    const {welcome, user, cookieValue, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, count, setCount, booksAdded, setBooksAdded, colorToggleStyle} = props
     const {id} = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
@@ -142,7 +142,7 @@ const BookDetail = (props) => {
                     (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
                 }
                 { // delete
-                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-dark' onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className={colorToggleStyle.b2r} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
                 }
 
                 <br/>                
