@@ -27,7 +27,7 @@ function App() {
     mainDiv: "row mainDivLight",
     formGroup: "col-md-6 offset-1",
     btnClass: "btn btn-dark",
-    btnText: "Dark Mode",
+    btnText: "🌙",
     app: "AppLight",
     b2r: "btn btn-dark"
   })

@@ -67,20 +67,14 @@ const Nav = (props) => {
     }
 
     const colorToggle = () => {
-        if(colorToggleStyle.btnText === "Dark Mode"){
+        if(colorToggleStyle.btnText === "🌙"){
             document.body.style = 'background: rgb(33,37,41);'
             setNavStyle("navDark")
-            // setColorToggleState({
-            //     class: "btn btn-light",
-            //     text: "Light Mode"
-            // })
-            // setColorToggleClass("btn btn-light")
-            // setColorToggleText("Light Mode")
             setColorToggleStyle({
                 mainDiv: "row mainDivDark",
                 formGroup: "col-md-6 offset-1 ",
-                btnClass: "btn btn-light",
-                btnText: "Light Mode",
+                btnClass: "btn btn-primary",
+                btnText: "☀️",
                 app: "AppDark",
                 b2r: "btn btn-danger"
                 })
@@ -88,15 +82,11 @@ const Nav = (props) => {
         }else{
             document.body.style = 'background: white;'
             setNavStyle("navLight")
-            // setColorToggleState({
-            //     class: "btn btn-dark",
-            //     text: "Dark Mode"
-            // })
             setColorToggleStyle({
                 mainDiv: "row mainDivLight",
                 formGroup: "col-md-6 offset-1",
                 btnClass: "btn btn-dark",
-                btnText: "Dark Mode",
+                btnText: "🌙",
                 app: "AppLight",
                 b2r: "btn btn-dark"
                 })
