@@ -23,6 +23,14 @@ function App() {
   const [favoritedBy, setFavoritedBy] = useState([])
   const [booksFavorited, setBooksFavorited] = useState([])
   const [booksAdded, setBooksAdded] = useState([])
+  const [colorToggleStyle, setColorToggleStyle] = useState({
+    mainDiv: "row mainDivLight",
+    formGroup: "col-md-6 offset-1",
+    class: "btn btn-light",
+    text: "Dark Mode"
+  })
+  // const [mainDivStyle, setMainDivStyle] = useState("row mainDivLight")
+  // const [formGroupStyle, setFormGroupStyle] = useState("col-md-6 offset-1")
   const cookieValue = Cookies.get('userToken');
   
   useEffect(() => {
@@ -41,10 +49,10 @@ function App() {
   // console.log(`user`, user)
   return (
     <div className="App">
-      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} setBooksAdded={setBooksAdded}/>
+      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} setBooksAdded={setBooksAdded} colorToggleStyle={colorToggleStyle} setColorToggleStyle={setColorToggleStyle}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
+        <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded} colorToggleStyle={colorToggleStyle} setColorToggleStyle={setColorToggleStyle}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} setFavoritedBy={setFavoritedBy} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} cookieValue={cookieValue} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>

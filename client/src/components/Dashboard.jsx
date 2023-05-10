@@ -9,7 +9,7 @@ import withAuth from './WithAuth'
 // on ANOTHER user's page, the user links dont work
 
 const Dashboard = (props) => {
-    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded} = props
+    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded, colorToggleStyle} = props
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
@@ -20,16 +20,6 @@ const Dashboard = (props) => {
         axios.get(`http://localhost:8000/api/books`)
         .then(res=>{
             setBookList(res.data.book)
-            // if(favoritedBy.length>0){
-                // setFavoritedBy([])
-                // setBooksFavorited([])
-                // setBooksAdded([])
-                // console.log(`all 3 UE`, `favoritedBy`, favoritedBy, `booksFavorited`, booksFavorited, `booksAdded`, booksAdded)
-                
-            // }
-
-            // setBooksFavorited([...booksFavorited])
-            // console.log(`booklist`, res.data.book)
         })
         .catch(err=>console.log(err))
     }, [count]);
@@ -123,24 +113,24 @@ const Dashboard = (props) => {
             <br/><br/><br/>
             {/* <h1>Welcome to the dashboard</h1> */}
             {/* <button className='btn btn-danger' onClick={logout}>Logout</button> */}
-            <div className="row">
+            <div className={colorToggleStyle.mainDiv}>
                 <div className="col-md-6" style={{display:'inline'}}>
-                    <form className="col-md-6 offset-1" onSubmit={submitHandler}>
+                    <form className={colorToggleStyle.formGroup} onSubmit={submitHandler}>
                         <h3>Add a new book</h3>
                         {oneBook.title && oneBook.title?.length<2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p>: ""}
-                        <div className="form-group">
+                        <div className="form-group col-10 mx-auto">
                             <label className='form-label'>Title</label>
                             <input type="text" className="form-control" name="title" value={oneBook.title} onChange={changeHandler}/>
                         </div>
                         {oneBook.author && oneBook.author?.length<2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : ""}
                         {errors.author ? <p className="text-danger">{errors.author.message}</p>: ""}
-                        <div className="form-group">
+                        <div className="form-group col-10 mx-auto">
                             <label className='form-label'>Author</label>
                             <input type="text" className="form-control" name="author" value={oneBook.author} onChange={changeHandler}/>
                         </div>
                         <div className="form-group">
-                            <button type="submit" className='btn btn-primary mt-3'>Add Book</button>
+                            <button type="submit" className='btn btn-primary mt-3 mb-3'>Add Book</button>
                         </div>
                     </form>
                 </div>

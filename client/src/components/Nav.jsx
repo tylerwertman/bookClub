@@ -5,10 +5,16 @@ import jwtdecode from 'jwt-decode'
 
 
 const Nav = (props) => {
-    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, favoritedBy, setFavoritedBy, setBooksAdded} = props
+    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, favoritedBy, setFavoritedBy, setBooksAdded, colorToggleStyle, setColorToggleStyle} = props
 
     const navigate = useNavigate()
-    
+    const [navStyle, setNavStyle] = useState('navLight')
+    // const [colorToggleState, setColorToggleState] = useState({
+    //     class: "btn btn-dark",
+    //     text: "Dark Mode"
+    // })
+    // const [colorToggleClass, setColorToggleClass] = useState("btn btn-dark")
+    // const [colorToggleText, setColorToggleText] = useState("Dark Mode")
     useEffect(() => {
         if(cookieValue){
             setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
@@ -59,8 +65,42 @@ const Nav = (props) => {
             // console.log("logged out so nav to /")
         }
     }
+
+    const colorToggle = () => {
+        if(colorToggleStyle.text === "Dark Mode"){
+            document.body.style = 'background: rgb(33,37,41);'
+            setNavStyle("navDark")
+            // setColorToggleState({
+            //     class: "btn btn-light",
+            //     text: "Light Mode"
+            // })
+            // setColorToggleClass("btn btn-light")
+            // setColorToggleText("Light Mode")
+            setColorToggleStyle({
+                mainDiv: "row mainDivDark",
+                formGroup: "col-md-6 offset-1 ",
+                class: "btn btn-light",
+                text: "Light Mode"
+                })
+            
+        }else{
+            document.body.style = 'background: white;'
+            setNavStyle("navLight")
+            // setColorToggleState({
+            //     class: "btn btn-dark",
+            //     text: "Dark Mode"
+            // })
+            setColorToggleStyle({
+                mainDiv: "row mainDivLight",
+                formGroup: "col-md-6 offset-1",
+                class: "btn btn-dark",
+                text: "Dark Mode"
+                })
+            
+        }
+    }
     return (
-        <nav>
+        <nav className={navStyle}>
             <div>
             <h1 style={{display:'inline'}} onClick={(navHome)}>Book Club</h1>
             {
@@ -75,10 +115,11 @@ const Nav = (props) => {
                 {
                 (welcome!=="Guest") ?
                 // (loggedIn) ?
-                <button className='btn btn-danger' onClick={logout}>Logout</button>
+                <><button className='btn btn-danger' onClick={logout}>Logout</button>&nbsp;&nbsp;</>
                 :
                 <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link></>
                 }
+                <button className={colorToggleStyle.class} onClick={colorToggle}>{colorToggleStyle.text}</button>
             </div>
         </nav>
     )

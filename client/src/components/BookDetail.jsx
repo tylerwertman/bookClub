@@ -43,7 +43,7 @@ const BookDetail = (props) => {
     }
 
     const favoriteBook = () => {
-        if(!bookFavByContainsLoggedInUser){
+        // if(!bookFavByContainsLoggedInUser){
             // if(favoritedBy.includes(user?._id)){
             //     const filteredFavBy = favoritedBy?.filter(userObj => {console.log(userObj, user._id);return (userObj._id!==user?._id)})
             //     setFavoritedBy(filteredFavBy)
@@ -62,7 +62,7 @@ const BookDetail = (props) => {
                 axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favoritedBy})
                 .then(res=>{
                     // console.log(`user added to book obj`)
-                    navigate(`/books/${id}`)
+                    // navigate(`/books/${id}`)
                     setCount(count+1)
                     // favoritedBy.pop()
                 })
@@ -82,7 +82,7 @@ const BookDetail = (props) => {
                     // setCount(count+1)
                 })
                 .catch(err=>console.log(`FAV error during PUT to user obj`, err))
-        }
+        // }
     }
 
     const unfavoriteBook = () => {
