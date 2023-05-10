@@ -9,7 +9,7 @@ import withAuth from './WithAuth'
 // on ANOTHER user's page, the user links dont work
 
 const Dashboard = (props) => {
-    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded, colorToggleStyle} = props
+    const {cookieValue, user, count, setCount, favoritedBy, setFavoritedBy, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded, colorToggleStyle, darkMode} = props
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
@@ -113,9 +113,9 @@ const Dashboard = (props) => {
             <br/><br/><br/>
             {/* <h1>Welcome to the dashboard</h1> */}
             {/* <button className='btn btn-danger' onClick={logout}>Logout</button> */}
-            <div className={colorToggleStyle.mainDiv}>
+            <div className={darkMode?"row mainDivLight":"row mainDivDark"}>
                 <div className="col-md-6" style={{display:'inline'}}>
-                    <form className={colorToggleStyle.formGroup} onSubmit={submitHandler}>
+                    <form className={darkMode?"col-md-6 offset-1":"col-md-6 offset-1 bg-dark text-light"} onSubmit={submitHandler}>
                         <h3>Add a new book</h3>
                         {oneBook.title && oneBook.title?.length<2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p>: ""}
