@@ -21,10 +21,10 @@ const Dashboard = (props) => {
         .then(res=>{
             setBookList(res.data.book)
             // if(favoritedBy.length>0){
-                setFavoritedBy([])
+                // setFavoritedBy([])
                 // setBooksFavorited([])
                 // setBooksAdded([])
-                console.log(`all 3 UE`, `favoritedBy`, favoritedBy, `booksFavorited`, booksFavorited, `booksAdded`, booksAdded)
+                // console.log(`all 3 UE`, `favoritedBy`, favoritedBy, `booksFavorited`, booksFavorited, `booksAdded`, booksAdded)
                 
             // }
 
@@ -33,7 +33,6 @@ const Dashboard = (props) => {
         })
         .catch(err=>console.log(err))
     }, [count]);
-    
     
     const changeHandler = (e) => {
         setOneBook({
@@ -45,39 +44,41 @@ const Dashboard = (props) => {
 
     const submitHandler = (e) => {
         e.preventDefault()
+        // if(favoritedBy.includes(jwtdecode(cookieValue)._id)){
+        //     console.log(`inside if`)
+        //     favoritedBy.push(jwtdecode(cookieValue)._id)
+        // }
         axios.post('http://localhost:8000/api/books', oneBook)
         .then(res=>{
             // console.log(oneBook.addedBy)
-            console.log(res.data.book);
+            // console.log(res.data.book);
             // navigate('/dashboard')
             setBookList([...bookList, res.data.book])
-
+            // setFavoritedBy([])
+            // setBooksFavorited([])
+            // setBooksAdded([])
             // after posting book to DB, set the favoritedBy, booksFavorited, & booksAdded to put those to the book and user objects
-            favoritedBy.push(jwtdecode(cookieValue)._id)
+            // booksFavorited.pop()
             booksFavorited.push(res.data.book._id)
             booksAdded.push(res.data.book._id)
             console.log(`all 3 onSubmit`, favoritedBy, booksFavorited, booksAdded)
 
-            console.log(res.data.book._id)
+            // console.log(res.data.book._id)
 
 
             //axios put to favs array in books object
-            axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: favoritedBy})
+            axios.put(`http://localhost:8000/api/books/${res.data.book?._id}`, {favoritedBy: [(jwtdecode(cookieValue)._id)]})
             .then(res=>{
-                console.log(`success putting user to favs in book obj`)
-                // booksFavorited.pop()
-                // setFavoritedBy([])
-                // favoritedBy.pop()
-                // console.log(favoritedBy)
-                // navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
-        })
+                // console.log(`success putting user to favs in book obj`)
+                navigate(`/books/${res.data.book._id}`)              //option to direct to new book's detail page on creation
+            })
             .catch(err=>console.log(`fav put error`, `favoritedBy`, favoritedBy))
 
 
             // axios put to favs array in user object
             axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
             .then(res=>{
-                console.log(`success putting to favs in user`, `favorites`, booksFavorited)
+                // console.log(`success putting to favs in user`, `favorites`, booksFavorited)
                 // setBooksFavorited([...booksFavorited])
             })
             .catch(err=>console.log(`errer putting to favs in user obj`, `favorites`, booksFavorited))
@@ -86,7 +87,7 @@ const Dashboard = (props) => {
             // axios put to added array in user object
             axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksAdded: booksAdded})
             .then(res=>{
-                console.log(`success putting to added in user`, `added`, booksAdded)
+                // console.log(`success putting to added in user`, `added`, booksAdded)
                 // setBooksFavorited([...booksFavorited])
             })
             .catch(err=>console.log(`errer putting to favs in user obj`, `favorites`, booksFavorited))
@@ -99,6 +100,10 @@ const Dashboard = (props) => {
                 title: "",
                 author: ""
             })
+            favoritedBy.pop()
+            // booksFavorited.pop()
+            // booksAdded.pop()
+            console.log("new favBy", favoritedBy)
             // window.location.reload()
             setCount(count+1)
             // console.log(`dash submit`, count)

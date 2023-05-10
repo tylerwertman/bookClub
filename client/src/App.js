@@ -41,11 +41,11 @@ function App() {
   // console.log(`user`, user)
   return (
     <div className="App">
-      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} setFavoritedBy={setFavoritedBy}/>
+      <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} setBooksAdded={setBooksAdded}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/dashboard" element={<Dashboard cookieValue={cookieValue} user={user} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
-        <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
+        <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} setFavoritedBy={setFavoritedBy} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} cookieValue={cookieValue} count={count} setCount={setCount} favoritedBy={favoritedBy} setFavoritedBy={setFavoritedBy} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>
         <Route path="/users/:id" element={<UserDetail welcome={welcome} setWelcome={setWelcome} user={user} count={count} setCount={setCount} setLoggedIn={setLoggedIn} booksFavorited={booksFavorited} setBooksFavorited={setBooksFavorited} booksAdded={booksAdded} setBooksAdded={setBooksAdded}/>}/>

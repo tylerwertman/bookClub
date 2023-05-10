@@ -5,7 +5,7 @@ import jwtdecode from 'jwt-decode'
 
 
 const Nav = (props) => {
-    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, setFavoritedBy} = props
+    const {cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, favoritedBy, setFavoritedBy, setBooksAdded} = props
 
     const navigate = useNavigate()
     
@@ -20,10 +20,13 @@ const Nav = (props) => {
         .then(res=>{
             setCount(count+1)
             setBooksFavorited([])
-            console.log(user._id)
+            setBooksAdded([])
+            setFavoritedBy([])
+            console.log(`favoritedBy`, favoritedBy, `booksFavorited`, booksFavorited)
+            // console.log(user._id)
             axios.put(`http://localhost:8000/api/users/${user._id}`, {booksFavorited: [], booksAdded: []})
             .then(res=>{
-                console.log(`success clearing favs in user on clearBooks`, `favorites`, booksFavorited)
+                // console.log(`success clearing favs in user on clearBooks`, `favorites`, booksFavorited)
                 // setBooksFavorited([...booksFavorited])
                 navigate("/dashboard")
             })
@@ -50,10 +53,10 @@ const Nav = (props) => {
     const navHome = () => {
         if(loggedIn){
             navigate("/dashboard")
-            console.log("logged in so nav to dash")
+            // console.log("logged in so nav to dash")
         }else{
             navigate("/")
-            console.log("logged out so nav to /")
+            // console.log("logged out so nav to /")
         }
     }
     return (

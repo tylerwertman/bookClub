@@ -11,16 +11,17 @@ const BookDetail = (props) => {
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
     const [filteredFavs, setFilteredFavs] = useState([])
-    const hideFav = "btn btn-success"
-    const hideUnfav = "btn btn-danger"
     const bookFavByContainsLoggedInUser = favoritedBy.some(bookObj => bookObj._id === user._id);
+    // const bookFavByContainsLoggedInUser = favoritedBy.includes(user?._id);
+    // const userBooksFavedContainsCurrentBook = booksFavorited.includes(oneBook?._id);
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
         .then(res=>{
             setOneBook(res.data.book)
-            setFavoritedBy([...res.data.book.favoritedBy])
             console.log(`UE favoritedBy`, favoritedBy)
+            setFavoritedBy([...res.data.book.favoritedBy])
+            console.log(`UE favoritedBy after set`, favoritedBy)
             // setFavoritedBy([])
         })
         .catch(err=>console.log(err))
@@ -42,36 +43,45 @@ const BookDetail = (props) => {
     }
 
     const favoriteBook = () => {
-        // console.log(oneBook)
-        // console.log(user)
-        // console.log(jwtdecode(cookieValue)._id)
-            if(!bookFavByContainsLoggedInUser){
+        if(!bookFavByContainsLoggedInUser){
+            // if(favoritedBy.includes(user?._id)){
+            //     const filteredFavBy = favoritedBy?.filter(userObj => {console.log(userObj, user._id);return (userObj._id!==user?._id)})
+            //     setFavoritedBy(filteredFavBy)
+            //     console.log(`favoritedBy`, favoritedBy)
+            // }
                 console.log(bookFavByContainsLoggedInUser)
+                // console.log(userBooksFavedContainsCurrentBook)
+
+
                 //update favBy and put favBy to books object
-                    console.log(`fav`, favoritedBy)
-                    favoritedBy?.push(user?._id)
-                    console.log(`fav post push`, favoritedBy)
-                    axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favoritedBy})
-                    .then(res=>{
-                        // console.log(`user added to book obj`)
-                        navigate(`/books/${id}`)
-                        setCount(count+1)
-                        // favoritedBy.pop()
-                    })
-                    .catch(err=>console.log(`FAV error during PUT to book obj`, err))
-                    
-                    // update booksFaved and put booksFaved to user object
-                    // console.log(`booksFavorited on fav`, booksFavorited)
-                    booksFavorited.push(oneBook._id)
-                    // console.log(booksFavorited)
-                    axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
-                    .then(res=>{
-                        // console.log(`book added to user obj`)
-                        // setBooksFavorited([])
-                        // booksFavorited.pop()
-                        setCount(count+1)
-                    })
-                    .catch(err=>console.log(`FAV error during PUT to user obj`, err))
+                
+                // favoritedBy.pop()
+                favoritedBy?.push(user?._id)
+                // setCount(count+1)
+                console.log(`fav post push`, favoritedBy)
+                axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: favoritedBy})
+                .then(res=>{
+                    // console.log(`user added to book obj`)
+                    navigate(`/books/${id}`)
+                    setCount(count+1)
+                    // favoritedBy.pop()
+                })
+                .catch(err=>console.log(`FAV error during PUT to book obj`, err))
+                
+                
+                // update booksFaved and put booksFaved to user object
+
+                // console.log(`booksFavorited on fav`, booksFavorited)
+                booksFavorited.push(oneBook._id)
+                // console.log(booksFavorited)
+                axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: booksFavorited})
+                .then(res=>{
+                    // console.log(`book added to user obj`)
+                    // setBooksFavorited([])
+                    // booksFavorited.pop()
+                    // setCount(count+1)
+                })
+                .catch(err=>console.log(`FAV error during PUT to user obj`, err))
         }
     }
 
@@ -79,22 +89,33 @@ const BookDetail = (props) => {
         
         if(bookFavByContainsLoggedInUser){
             console.log(bookFavByContainsLoggedInUser)
+            // console.log(userBooksFavedContainsCurrentBook)
             
             // remove user from list of book's favs and push filtered favoritedBy array to book obj
-            const filteredFavBy = favoritedBy?.filter(userObj => userObj._id!==user?._id)
+            const filteredFavBy = favoritedBy?.filter(userObj => {
+                console.log(userObj._id, user._id);
+                return (userObj._id!==user?._id)
+            })
+            console.log(`filteredFavBy`, filteredFavBy)
+            setFavoritedBy(filteredFavBy)
+            console.log(`filteredFavBy`, filteredFavBy)
             axios.put(`http://localhost:8000/api/books/${id}`, {favoritedBy: filteredFavBy})
             .then(res=>{
                 // console.log(`UNfav success? updated book obj`, res)
                 navigate(`/books/${id}`)
-                setCount(count+1)
+                // setCount(count+1)
+                filteredFavBy.pop()
             })
             .catch(err=>console.log(`UNfav error during PUT to book obj`, err))
 
 
             // remove book from list of user's favs and push filtered booksFavorited array to user obj
-            const filteredFavBooks = booksFavorited?.filter(bookObj => bookObj!==oneBook._id)
-            // setBooksFavorited(filteredFavBooks)
-            // console.log(`filteredFavBooks`, filteredFavBooks)
+            const filteredFavBooks = booksFavorited?.filter(bookObj => {
+                console.log(bookObj, oneBook._id);
+                return (bookObj!==oneBook?._id)
+            })
+            setBooksFavorited(filteredFavBooks)
+            console.log(`filteredFavBooks`, filteredFavBooks)
             axios.put(`http://localhost:8000/api/users/${user?._id}`, {booksFavorited: filteredFavBooks})
             .then(res=>{
                 // console.log(`UNfav success? updated user obj`, res)
@@ -114,8 +135,8 @@ const BookDetail = (props) => {
                 <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
                 { // fav/unfav
                     bookFavByContainsLoggedInUser
-                    ? <><button className={hideUnfav} onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp;</>
-                    : <><button className={hideFav} onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
+                    ? <><button className="btn btn-danger" onClick={()=>unfavoriteBook(favoritedBy.id)}>Unfavorite Book</button>&nbsp;&nbsp;</>
+                    : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
                 }
                 { // edit
                     (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null

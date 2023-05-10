@@ -6,7 +6,7 @@ import jwtdecode from 'jwt-decode'
 
 const LoginForm = (props) => {
 
-    const {count, setCount} = props
+    const {count, setCount, setFavoritedBy} = props
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
     const [userInfo, setUserInfo] = useState({
@@ -27,7 +27,7 @@ const LoginForm = (props) => {
             // console.log(res);
             setCount(count+1)
             navigate('/dashboard')
-            
+            setFavoritedBy([])
             window.location.reload()
         })
         .catch(err=>{
