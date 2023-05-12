@@ -27,7 +27,6 @@ const LoginForm = (props) => {
             // console.log(res);
             setCount(count+1)
             navigate('/dashboard')
-            setFavoritedBy([])
             window.location.reload()
         })
         .catch(err=>{

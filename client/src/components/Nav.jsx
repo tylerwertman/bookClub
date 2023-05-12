@@ -3,10 +3,9 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
-import NightModeToggle from './NightModeToggle'
 
 const Nav = (props) => {
-    const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, booksFavorited, setBooksFavorited, favoritedBy, setFavoritedBy, setBooksAdded, darkModeStyle, setDarkModeStyle, darkMode, setDarkMode } = props
+    const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, darkMode, setDarkMode } = props
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -20,33 +19,33 @@ const Nav = (props) => {
         const darkModeCookie = Cookies.get('darkMode');
         console.log(darkModeCookie, darkMode)
         setDarkMode(darkModeCookie === "true");
-        if (darkModeCookie===true) {
-            document.body.style.background = 'rgb(33, 37, 41)';
-        } else {
-            document.body.style.background = 'white';
-        }
+        if (darkModeCookie==="true") document.body.style.background = 'rgb(33, 37, 41)';
+        else document.body.style.background = 'white';
     }, [])
 
-    const clearBooks = () => {
-        axios.delete(`http://localhost:8000/api/books/`)
-            .then(res => {
-                setCount(count + 1)
-                setBooksFavorited([])
-                setBooksAdded([])
-                setFavoritedBy([])
-                console.log(`favoritedBy`, favoritedBy, `booksFavorited`, booksFavorited)
-                // console.log(user._id)
-                axios.put(`http://localhost:8000/api/users/${user._id}`, { booksFavorited: [], booksAdded: [] })
-                    .then(res => {
-                        // console.log(`success clearing favs in user on clearBooks`, `favorites`, booksFavorited)
-                        // setBooksFavorited([...booksFavorited])
-                        navigate("/dashboard")
-                    })
-                    .catch(err => console.log(`errer clearing favs in user on clearBooks`, `favorites`, booksFavorited))
-            })
+    const colorToggle = () => {
+        const updatedDarkMode = !darkMode;
+        setDarkMode(updatedDarkMode);
+        Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 });
 
-            .catch(err => console.log(err))
+        if (updatedDarkMode) document.body.style.background = 'rgb(33, 37, 41)';
+        else document.body.style.background = 'white';
+        
     }
+    
+    // const clearBooks = () => {
+    //     axios.delete(`http://localhost:8000/api/books/`)
+    //         .then(res => {
+    //             setCount(count + 1)
+    //             axios.put(`http://localhost:8000/api/users/${user._id}`, { booksFavorited: [], booksAdded: [] })
+    //                 .then(res => {
+    //                     navigate("/dashboard")
+    //                 })
+    //                 .catch(err => console.log(`errer clearing favs in user on clearBooks`, err))
+    //         })
+
+    //         .catch(err => console.log(err))
+    // }
 
     const logout = () => {
         axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
@@ -56,7 +55,6 @@ const Nav = (props) => {
                 setWelcome("Guest")
                 setLoggedIn(false)
                 setUser()
-                setFavoritedBy([])
             })
             .catch(err => console.log(err))
         console.log("logging out")
@@ -72,30 +70,19 @@ const Nav = (props) => {
         }
     }
 
-    const colorToggle = () => {
-        const updatedDarkMode = !darkMode;
-        setDarkMode(updatedDarkMode);
-        Cookies.set('darkMode', updatedDarkMode.toString(), { expires: 7 });
-
-        if (!updatedDarkMode) {
-            document.body.style.background = 'rgb(33, 37, 41)';
-        } else {
-            document.body.style.background = 'white';
-        }
-    }
 
 return (
-    <nav className={darkMode?"navLight":"navDark"}>
+    <nav className={darkMode?"navDark":"navLight"}>
         <div>
             <h1 style={{ display: 'inline' }} onClick={(navHome)}>Book Club</h1>
             {
                 welcome !== "Guest" ?
-                    <><h4 style={{ display: 'inline' }}>Welcome, </h4><Link to={`/users/${user?._id}`} onClick={() => { setCount(count + 1) }}>{welcome}</Link></> :
+                    <span><h4 style={{ display: 'inline' }}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></span> :
                     <h4 style={{ display: 'inline' }}>Welcome, Guest</h4>
             }
         </div>
         <div>
-            <button className={darkMode?"btn btn-dark":"btn btn-danger"} onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp;
+            {/* <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp; */}
 
             {
                 (welcome !== "Guest") ?
@@ -104,8 +91,7 @@ return (
                     :
                     <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link>&nbsp;&nbsp;</>
             }
-            <button className={darkMode?"btn btn-dark":"btn btn-primary"} onClick={colorToggle}>{darkMode?"🌙":"☀️"}</button>
-            {/* <NightModeToggle onChange={colorToggle}/> */}
+            <button className={darkMode?"btn btn-primary":"btn btn-dark"} onClick={colorToggle}>{darkMode?"☀️":"🌙"}</button>
         </div>
     </nav>
 )

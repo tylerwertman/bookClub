@@ -5,7 +5,7 @@ import withAuth from './WithAuth'
 
 const UserDetail = (props) => {
     const {id} = useParams()
-    const {welcome, setWelcome, count, setCount, user, setLoggedIn, booksFavorited, setBooksFavorited, booksAdded, setBooksAdded, darkMode} = props
+    const {welcome, setWelcome, count, user, setLoggedIn, darkMode} = props
     // const [booksFavorited, setBooksFavorited] = useState([])
     const navigate = useNavigate();
     const [oneUser, setOneUser] = useState({})
@@ -13,17 +13,7 @@ const UserDetail = (props) => {
     useEffect(() => {
         axios.get(`http://localhost:8000/api/users/${id}`)
         .then(res=>{
-            // console.log(res.data.user)
             setOneUser(res.data.user)
-            setBooksFavorited([])
-            // setBooksFavorited([...res.data.user.booksFavorited])
-            console.log(`uDetail UE booksFavorited`, booksFavorited)
-            setBooksAdded([...res.data.user.booksAdded])
-            // booksFavorited.push(res.data.user.booksFavorited)
-            console.log(`uDetail booksFavorited`, res.data.user.booksFavorited)
-            // console.log(oneUser)
-            // setFavorites(res.data.book.favoritedBy)
-            // console.log(res)
         })
         .catch(err=>console.log(err))
         
@@ -35,7 +25,7 @@ const UserDetail = (props) => {
             .then(res=>{
                 navigate("/")
                 setWelcome("Guest")
-                setCount(count+1)
+                // setCount(count+1)
                 axios.post('http://localhost:8000/api/users/logout', {}, {withCredentials: true})
             .then(res=>{
                 // console.log(res.data)
@@ -50,25 +40,25 @@ const UserDetail = (props) => {
         
     }
     return (
-        <div className='mt-5'>
+        <div className={darkMode?"mainDivDark":"mainDivLight"}>
             <h2>User: {oneUser?.firstName} {oneUser?.lastName}</h2>
+                <div className='flex'>
+                    <div className='col-md-3 offset-3'>
+                        <h4>Favorite Books:</h4>
+                        {oneUser?.booksFavorited?.map((usersFavBooks)=>{
+                                return <h6 key={usersFavBooks._id}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6>
+                            })}
+                    </div>
+                    <div className='col-md-3'>
+                    <h4>Added Books:</h4>
+                    {oneUser?.booksAdded?.map((usersAddedBooks)=>{
+                        return <h6 key={usersAddedBooks._id}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6>
+                    })}
+                    </div>
+                </div>
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
-            <h4>Favorite Books:</h4>
-            {
-                oneUser?.booksFavorited?.map((usersFavBooks, i)=>{
-                    return <><h6 key={i}><Link to={`/books/${usersFavBooks?._id}`}>{usersFavBooks?.title}</Link></h6></>
-
-                })
-            }
-            <h4>Added Books:</h4>
-            {
-                oneUser?.booksAdded?.map((usersAddedBooks, i)=>{
-                    return <><h6 key={i}><Link to={`/books/${usersAddedBooks?._id}`}>{usersAddedBooks?.title}</Link></h6></>
-
-                })
-            }
-            {welcome === (user?.firstName + " " + user?.lastName) ? <button className={darkMode?"btn btn-dark":"btn btn-danger"} onClick={deleteAccount}>Delete Account</button> : null}
+            {welcome === (user?.firstName + " " + user?.lastName) ? <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={deleteAccount}>Delete Account</button> : null}
         </div>
     )
 }
