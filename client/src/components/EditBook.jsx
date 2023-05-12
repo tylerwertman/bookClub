@@ -2,14 +2,27 @@ import React, {useEffect, useState} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import withAuth from './WithAuth'
+import { toast } from 'react-toastify';
 
-const EditBook = () => {
+
+const EditBook = (props) => {
+    const {darkMode} = props
+
     const {id} = useParams()
     const navigate = useNavigate()
     const [oneBook, setOneBook] = useState({})
     const [errors, setErrors] = useState({})
 
-
+    const toastEdit = () => toast.success(`✏️ You edited ${oneBook.title}`, {
+        position: "bottom-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode?"dark":"light"
+        });
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
@@ -26,6 +39,7 @@ const EditBook = () => {
         axios.put(`http://localhost:8000/api/books/${id}`, oneBook)
             .then(res=>{
                 navigate(`/books/${id}`)
+                toastEdit()
             })
             .catch(err=>{
                 setErrors({

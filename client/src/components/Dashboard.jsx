@@ -12,7 +12,7 @@ const Dashboard = (props) => {
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
     const [errors, setErrors] = useState({})
-    const toastAdded = () => toast.success('🦄 You added a book', {
+    const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
         hideProgressBar: false,
