@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 
 const Dashboard = (props) => {
-    const {count, darkMode} = props
+    const {count, setCount, user, darkMode} = props
     // const navigate = useNavigate();
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({title: "", author: ""})
@@ -20,8 +20,28 @@ const Dashboard = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light",
+        theme: darkMode?"dark":"light"
         });
+    // const toastFav = () => toast.success(`💚 You favorited ${oneBook.title}`, {
+    //     position: "bottom-right",
+    //     autoClose: 2500,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: darkMode?"dark":"light"
+    //     });
+    // const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, {
+    //     position: "bottom-right",
+    //     autoClose: 2500,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: darkMode?"dark":"light"
+    //     });
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -63,19 +83,38 @@ const Dashboard = (props) => {
         })
 
     }
+
+    // const favoriteBook = (id) => {
+    //     axios.post(`http://localhost:8000/api/books/${id}/favorite`, {}, {withCredentials:true})
+    //     .then(res=>{
+    //         setCount(count+1)
+    //         toastFav()
+    //     })
+    //     .catch(err=>console.log(`FAV error`, err))
+    // }
+
+    // const unfavoriteBook = (id) => {
+    //     axios.post(`http://localhost:8000/api/books/${id}/unfavorite`, {}, {withCredentials:true})
+    //     .then(res=>{
+    //         setCount(count+1)
+    //         toastUnfav()
+    //     })
+    //     .catch(err=>console.log(`UNfav error`, err))
+    // }
     return (
         <div>
+            <h1 className='mt-5'>Welcome to the Book Club</h1>
             <div className={darkMode?"row mainDivDark":"row mainDivLight"}>
                 <div className="col-md-4 offset-2" style={{display:'inline'}}>
                     <form className={darkMode?"col-md-6 offset-1 bg-dark text-light":"col-md-6 offset-1"} onSubmit={submitHandler}>
                         <h3>Add a new book</h3>
-                        {oneBook.title && oneBook.title?.length<2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
+                        {oneBook.title && oneBook.title?.length<2 ? <p className="text-danger">Title must be at least 2 characters</p> : ""}
                         {errors.title ? <p className="text-danger">{errors.title.message}</p>: ""}
                         <div className="form-group">
                             <label className='form-label'>Title</label>
                             <input type="text" className="form-control" name="title" value={oneBook.title} onChange={changeHandler}/>
                         </div>
-                        {oneBook.author && oneBook.author?.length<2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : ""}
+                        {oneBook.author && oneBook.author?.length<2 ? <p className="text-danger">Author must be at least 2 characters</p> : ""}
                         {errors.author ? <p className="text-danger">{errors.author.message}</p>: ""}
                         <div className="form-group">
                             <label className='form-label'>Author</label>
@@ -90,9 +129,10 @@ const Dashboard = (props) => {
                     <h3>All Books</h3>
                     {
                         bookList.map((book, index) => {
-                            return <div key={index}>
+                            return <div className="mt-4" key={index}>
                                 <><Link to={`/books/${book?._id}`}>{book?.title}</Link> by {book?.author}</>
-                                {bookList[index]?.addedBy?._id ? <p>(added by <Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p> : <p>(added by Deleted User)</p>}
+                                {bookList[index]?.addedBy?._id ? <p className='mb-1'>(added by <Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link>)</p> : <p>(added by Deleted User)</p>}
+                                {/* {book.favoritedBy.some(fav => fav._id === user?._id) ? <i style={{color:"red"}}onClick={()=>{unfavoriteBook(book._id)}}>Remove from your favorites?</i> : <u onClick={()=>favoriteBook(book._id)}>Add to Favs</u>} */}
                             </div>
                         })
                     }

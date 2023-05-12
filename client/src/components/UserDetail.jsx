@@ -40,7 +40,7 @@ const UserDetail = (props) => {
         
     }
     return (
-        <div className={darkMode?"mainDivDark":"mainDivLight"}>
+        <div className={darkMode?"mainDivDark mt-5":"mainDivLight mt-5"}>
             <h2>User: {oneUser?.firstName} {oneUser?.lastName}</h2>
                 <div className='flex'>
                     <div className='col-md-3 offset-3'>

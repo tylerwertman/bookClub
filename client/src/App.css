@@ -5,19 +5,17 @@ html {
 body {
   background-color: rgb(33, 37, 41);
   height: 100%;
-  /* background-image: url("https://cpet.tc.columbia.edu/uploads/1/8/4/5/18456699/newsletter-images-for-og-tags-41_1_orig.png"); */
 }
 
 .AppLight {
-  margin-top: 20px;
   text-align: center;
   /* background-color: white; */
 }
 .AppDark {
-  margin-top: 20px;
   text-align: center;
   background-color: rgb(33, 37, 41);
   color: lightgrey;
+  /* opacity: 20%; */
 }
 
 .AppDark a {
@@ -89,22 +87,9 @@ nav ul {
 a {
   /* text-decoration: none; */
 }
-.BG {
-  opacity: .25;
-  
-}
-.mainDivLight {
-  margin-top: 60px;
-  background-color: white;
-}
 
 .mainDivLight a {
   color: #009050;
-}
-.mainDivDark{
-  margin-top: 60px;
-  background-color: rgb(33,37,41);
-  color: lightgrey;
 }
 
 .mainDivDark a {

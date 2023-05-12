@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 import jwtdecode from 'jwt-decode'
 import UserDetail from './components/UserDetail';
 import UserNotFound from './components/UserNotFound'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -47,11 +47,11 @@ function App() {
   return (
     <div className={darkMode?"AppDark":"AppLight"}>
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode}/>
-      <button onClick={notify}>Notify!</button>
-      <ToastContainer />
+      <button style={{marginTop:"-40px"}}onClick={notify}>Notify!</button>
+      <ToastContainer transition={Slide}/>
       <Routes>
         <Route path="/" element={<Home />}/>
-        <Route path="/dashboard" element={<Dashboard count={count} darkMode={darkMode}/>}/>
+        <Route path="/dashboard" element={<Dashboard count={count} setCount={setCount} user={user} darkMode={darkMode}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>

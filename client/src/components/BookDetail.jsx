@@ -86,35 +86,32 @@ const BookDetail = (props) => {
     }
 
     return (
-        <div>
-            <div className='mt-5'>
-                <br/>
-                <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
-                { // fav/unfav
-                    bookFavByContainsLoggedInUser
-                    ? <><button className="btn btn-danger" onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;&nbsp;</>
-                    : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
-                }
-                { // edit
-                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
-                }
-                { // delete
-                    (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user.email === "t@w.com") ? <><button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
-                }
+        <div className='mt-5'>
+            <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
+            { // fav/unfav
+                bookFavByContainsLoggedInUser
+                ? <><button className="btn btn-danger" onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;&nbsp;</>
+                : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
+            }
+            { // edit
+                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
+            }
+            { // delete
+                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+            }
 
-                <br/>                
-                <h2>Book Title: {oneBook?.title}</h2>
-                <h3>Book Author: {oneBook?.author}</h3>
-                <h4 style={{display:"inline"}}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{display:"inline"}}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</Link></h4> : <h4 style={{display:"inline"}}>Deleted User</h4>}
-                <h6>Added on: {new Date(oneBook?.createdAt).toLocaleString()}</h6>
-                <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>
-                <h4>Favorited By:</h4>
-                {
-                    oneBook.favoritedBy?.map((booksFavedBy, i) => {
-                        return <h5 key={i}><Link to={`/users/${booksFavedBy?._id}`}>{booksFavedBy.firstName} {booksFavedBy.lastName}</Link></h5>
-                    })
-                }
-            </div>
+            <br/>                
+            <h2>Book Title: {oneBook?.title}</h2>
+            <h3>Book Author: {oneBook?.author}</h3>
+            <h4 style={{display:"inline"}}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{display:"inline"}}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</Link></h4> : <h4 style={{display:"inline"}}>Deleted User</h4>}
+            <h6>Added on: {new Date(oneBook?.createdAt).toLocaleString()}</h6>
+            <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>
+            <h4>Favorited By:</h4>
+            {
+                oneBook.favoritedBy?.map((booksFavedBy, i) => {
+                    return <h5 key={i}><Link to={`/users/${booksFavedBy?._id}`}>{booksFavedBy.firstName} {booksFavedBy.lastName}</Link></h5>
+                })
+            }
         </div>
     )
 }
