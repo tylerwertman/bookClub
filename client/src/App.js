@@ -15,6 +15,7 @@ import UserDetail from './components/UserDetail';
 import UserNotFound from './components/UserNotFound'
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from './components/Footer';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -60,6 +61,7 @@ function App() {
         <Route path="/users/undefined" element={<UserNotFound/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
+      <Footer/>
     </div>
   );
 }
