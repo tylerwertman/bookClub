@@ -61,7 +61,7 @@ function App() {
         <Route path="/users/undefined" element={<UserNotFound/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
-      <Footer/>
+      <Footer darkMode={darkMode}/>
     </div>
   );
 }

@@ -50,6 +50,11 @@ footer {
   bottom: 0%;
   text-align: center;
 }
+.footerDark {
+  background-color: rgb(33,37,41);
+  color: lightgrey;
+  box-shadow: 0 0 10px lightgrey;
+}
 .navLight {
   background-color: whitesmoke;
   background-color: lightgrey;
