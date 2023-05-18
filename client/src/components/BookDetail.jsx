@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import {useParams, useNavigate, Link} from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import withAuth from './WithAuth'
 import { toast } from 'react-toastify';
 
 
 const BookDetail = (props) => {
-    const {welcome, user, darkMode} = props
-    const {id} = useParams()
+    const { welcome, user, darkMode } = props
+    const { id } = useParams()
     const navigate = useNavigate();
     const [oneBook, setOneBook] = useState({})
     const bookFavByContainsLoggedInUser = oneBook.favoritedBy ? oneBook.favoritedBy.some(bookObj => bookObj._id === user._id) : false;
@@ -19,8 +19,8 @@ const BookDetail = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light"
-        });
+        theme: darkMode ? "dark" : "light"
+    });
     const toastUnfav = () => toast.error(`🚫 You unfavorited ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -29,8 +29,8 @@ const BookDetail = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light"
-        });
+        theme: darkMode ? "dark" : "light"
+    });
     const toastDelete = () => toast.error(`🗑 You deleted ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -39,72 +39,72 @@ const BookDetail = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light"
-        });
+        theme: darkMode ? "dark" : "light"
+    });
 
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books/${id}`)
-        .then(res=>{
-            setOneBook(res.data.book)
-        })
-        .catch(err=>console.log(err))
-    
-    }, []);
+            .then(res => {
+                setOneBook(res.data.book)
+            })
+            .catch(err => console.log(err))
+
+    });
 
     const removeBook = () => {
         axios.delete(`http://localhost:8000/api/books/${id}`)
-        .then(res=>{
-            navigate("/dashboard")
-            toastDelete()
-    })
-        .catch(err=>console.log(err))
-        
+            .then(res => {
+                navigate("/dashboard")
+                toastDelete()
+            })
+            .catch(err => console.log(err))
+
     }
-    
+
     const editBook = (e) => {
         navigate(`/books/${id}/edit`)
     }
 
     const favoriteBook = () => {
-                axios.post(`http://localhost:8000/api/books/${id}/favorite`, {}, {withCredentials:true})
-                .then(res=>{
-                    setOneBook(res.data.book)
-                    toastFav()
-                })
-                .catch(err=>console.log(`FAV error`, err))
+        axios.post(`http://localhost:8000/api/books/${id}/favorite`, {}, { withCredentials: true })
+            .then(res => {
+                setOneBook(res.data.book)
+                toastFav()
+            })
+            .catch(err => console.log(`FAV error`, err))
     }
 
     const unfavoriteBook = () => {
-        if(!bookFavByContainsLoggedInUser) return
-        axios.post(`http://localhost:8000/api/books/${id}/unfavorite`, {}, {withCredentials:true})
-        .then(res=>{
-            setOneBook(res.data.book)
-            toastUnfav()
-        })
-        .catch(err=>console.log(`UNfav error`, err))
-        
+        if (!bookFavByContainsLoggedInUser) return
+        axios.post(`http://localhost:8000/api/books/${id}/unfavorite`, {}, { withCredentials: true })
+            .then(res => {
+                setOneBook(res.data.book)
+                toastUnfav()
+            })
+            .catch(err => console.log(`UNfav error`, err))
+
     }
 
     return (
         <div className='mt-5'>
-            <button className="btn btn-primary" onClick={()=>(navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
+            <button className="btn btn-primary" onClick={() => (navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
             { // fav/unfav
                 bookFavByContainsLoggedInUser
-                ? <><button className="btn btn-danger" onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;&nbsp;</>
-                : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
+                    ? <><button className="btn btn-danger" onClick={unfavoriteBook}>Unfavorite Book</button>&nbsp;&nbsp;</>
+                    : <><button className="btn btn-success" onClick={favoriteBook}>Favorite Book</button>&nbsp;&nbsp;</>
             }
             { // edit
                 (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName)) ? <><button className='btn btn-warning' onClick={editBook}>Edit Book</button>&nbsp;&nbsp;</> : null
             }
             { // delete
-                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
+                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={removeBook}>Delete Book</button>&nbsp;&nbsp;</> : null
             }
 
-            <br/>                
+            <br />
             <h2>Book Title: {oneBook?.title}</h2>
             <h3>Book Author: {oneBook?.author}</h3>
-            <h4 style={{display:"inline"}}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{display:"inline"}}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</Link></h4> : <h4 style={{display:"inline"}}>Deleted User</h4>}
+            <h4 style={{ display: "inline" }}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{ display: "inline" }}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</Link></h4> : <h4 style={{ display: "inline" }}>Deleted User</h4>}
             <h6>Added on: {new Date(oneBook?.createdAt).toLocaleString()}</h6>
             <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>
             <h4>Favorited By:</h4>

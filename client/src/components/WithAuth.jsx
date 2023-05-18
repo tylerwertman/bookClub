@@ -6,13 +6,12 @@ import Cookies from 'js-cookie';
 const withAuth = (Component) => {
 
     const cookieValue = Cookies.get('userToken');
-    // console.log(cookieValue)
 
     let isAuthenticated
 
-    if(cookieValue){
+    if (cookieValue) {
         isAuthenticated = true
-    }else{
+    } else {
         isAuthenticated = false
     }
 

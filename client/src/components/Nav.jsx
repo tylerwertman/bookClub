@@ -19,7 +19,7 @@ const Nav = (props) => {
         const darkModeCookie = Cookies.get('darkMode');
         console.log(darkModeCookie, darkMode)
         setDarkMode(darkModeCookie === "true");
-        if (darkModeCookie==="true") document.body.style.background = 'rgb(33, 37, 41)';
+        if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)';
         else document.body.style.background = 'white';
     }, [])
 
@@ -30,9 +30,11 @@ const Nav = (props) => {
 
         if (updatedDarkMode) document.body.style.background = 'rgb(33, 37, 41)';
         else document.body.style.background = 'white';
-        
+
     }
-    
+
+    //testing purposes clear all books
+
     // const clearBooks = () => {
     //     axios.delete(`http://localhost:8000/api/books/`)
     //         .then(res => {
@@ -71,29 +73,29 @@ const Nav = (props) => {
     }
 
 
-return (
-    <nav className={darkMode?"navDark":"navLight"}>
-        <div>
-            <h1 style={{ display: 'inline' }} onClick={(navHome)}>Book Club</h1>
-            {
-                welcome !== "Guest" ?
-                    <span><h4 style={{ display: 'inline' }}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></span> :
-                    <h4 style={{ display: 'inline' }}>Welcome, Guest</h4>
-            }
-        </div>
-        <div>
-            {/* <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp; */}
+    return (
+        <nav className={darkMode ? "navDark" : "navLight"}>
+            <div>
+                <h1 style={{ display: 'inline' }} onClick={(navHome)}>Book Club</h1>
+                {
+                    welcome !== "Guest" ?
+                        <span><h4 style={{ display: 'inline' }}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></span> :
+                        <h4 style={{ display: 'inline' }}>Welcome, Guest</h4>
+                }
+            </div>
+            <div>
+                {/* <button className={darkMode?"btn btn-danger":"btn btn-dark"} onClick={clearBooks}>Clear Books</button>&nbsp;&nbsp; */}
 
-            {
-                (welcome !== "Guest") ?
-                    // (loggedIn) ?
-                    <><button className='btn btn-danger' onClick={logout}>Logout</button>&nbsp;&nbsp;</>
-                    :
-                    <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link>&nbsp;&nbsp;</>
-            }
-            <button className={darkMode?"btn btn-primary":"btn btn-dark"} onClick={colorToggle}>{darkMode?"☀️":"🌙"}</button>
-        </div>
-    </nav>
-)
+                {
+                    (welcome !== "Guest") ?
+                        // (loggedIn) ?
+                        <><button className='btn btn-danger' onClick={logout}>Logout</button>&nbsp;&nbsp;</>
+                        :
+                        <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link>&nbsp;&nbsp;</>
+                }
+                <button className={darkMode ? "btn btn-primary" : "btn btn-dark"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
+            </div>
+        </nav>
+    )
 }
 export default Nav

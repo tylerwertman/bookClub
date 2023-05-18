@@ -29,8 +29,8 @@ const Dashboard = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light"
-        });
+        theme: darkMode ? "dark" : "light"
+    });
     const toastUnfav = (id) => toast.error(`🚫 You unfavorited ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -39,8 +39,8 @@ const Dashboard = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light"
-        });
+        theme: darkMode ? "dark" : "light"
+    });
     const toastDelete = (id) => toast.error(`🗑 You deleted ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -49,8 +49,8 @@ const Dashboard = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: darkMode?"dark":"light"
-        });
+        theme: darkMode ? "dark" : "light"
+    });
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -93,31 +93,31 @@ const Dashboard = (props) => {
     }
 
     const favoriteBook = (book) => {
-        axios.post(`http://localhost:8000/api/books/${book._id}/favorite`, {}, {withCredentials:true})
-        .then(res=>{
-            setCount(count+1)
-            toastFav(book.title)
-        })
-        .catch(err=>console.log(`FAV error`, err))
+        axios.post(`http://localhost:8000/api/books/${book._id}/favorite`, {}, { withCredentials: true })
+            .then(res => {
+                setCount(count + 1)
+                toastFav(book.title)
+            })
+            .catch(err => console.log(`FAV error`, err))
     }
 
     const unfavoriteBook = (book) => {
-        axios.post(`http://localhost:8000/api/books/${book._id}/unfavorite`, {}, {withCredentials:true})
-        .then(res=>{
-            setCount(count+1)
-            toastUnfav(book.title)
-        })
-        .catch(err=>console.log(`UNfav error`, err))
+        axios.post(`http://localhost:8000/api/books/${book._id}/unfavorite`, {}, { withCredentials: true })
+            .then(res => {
+                setCount(count + 1)
+                toastUnfav(book.title)
+            })
+            .catch(err => console.log(`UNfav error`, err))
     }
 
     const removeBook = (book) => {
         axios.delete(`http://localhost:8000/api/books/${book._id}`)
-        .then(res=>{
-            setCount(count+1)
-            toastDelete(book.title)
-    })
-        .catch(err=>console.log(err))
-        
+            .then(res => {
+                setCount(count + 1)
+                toastDelete(book.title)
+            })
+            .catch(err => console.log(err))
+
     }
     return (
         <div>
@@ -164,21 +164,21 @@ const Dashboard = (props) => {
                                         <td className={darkMode ? "lightText" : null}>{bookList[index]?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link></p> : <p>(added by Deleted User)</p>}</td>
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
                                         <td className={darkMode ? "lightText" : null}>
-                                        { // fav/unfav
-                                            bookList[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
-                                            ? <><button className="btn btn-outline-danger" onClick={()=>unfavoriteBook(book)}>🚫</button>&nbsp;&nbsp;</>
-                                            : <><button className="btn btn-outline-success" onClick={()=>favoriteBook(book)}>💚</button>&nbsp;&nbsp;</>
-                                        }
-                                        { // delete if logged in user or 'admin' email user
-                                            (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode?"btn btn-outline-danger":"btn btn-outline-dark"} onClick={()=>removeBook(book)}>🗑</button>&nbsp;&nbsp;</> : null
-                                        }
+                                            { // fav/unfav
+                                                bookList[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
+                                                    ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>🚫</button>&nbsp;&nbsp;</>
+                                                    : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>💚</button>&nbsp;&nbsp;</>
+                                            }
+                                            { // delete if logged in user or 'admin' email user
+                                                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🗑</button>&nbsp;&nbsp;</> : null
+                                            }
                                         </td>
                                     </tr>
                                 )
                             })}
                         </tbody>
                     </table>
-                    <br/><br/>
+                    <br /><br />
                 </div>
             </div>
         </div>

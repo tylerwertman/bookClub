@@ -30,21 +30,18 @@ function App() {
   const cookieValue = Cookies.get('userToken');
   
   useEffect(() => {
-    // console.log(`appjs ue`, count)
     setCount(count+1)
     if(Cookies.get('darkMode')===undefined) Cookies.set('darkMode', false.toString(), { expires: 7 })
-    // console.log(`appjs ue2`, count)
     if(cookieValue){
       setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
       setUser(jwtdecode(cookieValue))
-      // console.log(jwtdecode(cookieValue))
       setLoggedIn(true)
     }else{
       setWelcome("Guest")
     }
   }, []);
   const notify = () => toast("🦄You really pay attention to detail!🦄");
-  // console.log(`user`, user)
+
   return (
     <div className={darkMode?"AppDark":"AppLight"}>
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode}/>

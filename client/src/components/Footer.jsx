@@ -1,18 +1,10 @@
 import React from 'react'
 const Footer = (props) => {
-  const {darkMode} = props
-
-  let bgColor = darkMode ? "red" : "green"
-
-  if(darkMode){
-    let bgColor = "darkslategrey"
-  }else{
-    let bgColor = "white"
-  }
+  const { darkMode } = props
 
   return (
     <footer className={darkMode ? "footerDark mt-5" : "footerLight mt-5"}>
-        <a href="http://tylerw.xyz">© 2023 Tyler Wertman Developments</a>
+      <a href="http://tylerw.xyz">© 2023 Tyler Wertman Developments</a>
     </footer>
   )
 }
