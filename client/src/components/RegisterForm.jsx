@@ -52,27 +52,27 @@ const RegisterForm = (props) => {
             <div className="col-md-5 mx-auto mt-5">
                 <form onSubmit={submitHandler}>
                     <h3>Register</h3>
-                    {errors.firstName ? <p className="text-danger">{errors.firstName.message}</p> : ""}
+                    {errors.firstName ? <p className="text-danger">{errors.firstName.message}</p> : null}
                     <div className="form-group">
                         <label className='form-label'>First Name</label>
                         <input type="text" className="form-control" name="firstName" value={userInfo.firstName} onChange={changeHandler} />
                     </div>
-                    {errors.lastName ? <p className="text-danger">{errors.lastName.message}</p> : ""}
+                    {errors.lastName ? <p className="text-danger">{errors.lastName.message}</p> : null}
                     <div className="form-group">
                         <label className='form-label'>Last Name</label>
                         <input type="text" className="form-control" name="lastName" value={userInfo.lastName} onChange={changeHandler} />
                     </div>
-                    {errors.email ? <p className="text-danger">{errors.email.message}</p> : ""}
+                    {errors.email ? <p className="text-danger">{errors.email.message}</p> : null}
                     <div className="form-group">
                         <label className='form-label'>Email</label>
                         <input type="email" className="form-control" name="email" value={userInfo.email} onChange={changeHandler} />
                     </div>
-                    {errors.password ? <p className="text-danger">{errors.password.message}</p> : ""}
+                    {errors.password ? <p className="text-danger">{errors.password.message}</p> : null}
                     <div className="form-group">
                         <label className='form-label'>Password</label>
                         <input type="password" className="form-control" name="password" value={userInfo.password} onChange={changeHandler} />
                     </div>
-                    {errors.confirmPassword ? <p className="text-danger">{errors.confirmPassword.message}</p> : ""}
+                    {errors.confirmPassword ? <p className="text-danger">{errors.confirmPassword.message}</p> : null}
                     <div className="form-group">
                         <label className='form-label'>Confirm Password</label>
                         <input type="password" className="form-control" name="confirmPassword" value={userInfo.confirmPassword} onChange={changeHandler} />

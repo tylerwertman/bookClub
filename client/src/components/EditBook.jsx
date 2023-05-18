@@ -64,14 +64,14 @@ const EditBook = (props) => {
         <div>
             <h1>Edit a Book</h1>
             <form action="" className='col-md-6 offset-3' onSubmit={editBook}>
-                {oneBook.title?.length < 2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : ""}
-                {errors.title ? <p className="text-danger">{errors.title.message}</p> : ""}
+                {oneBook.title?.length < 2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : null}
+                {errors.title ? <p className="text-danger">{errors.title.message}</p> : null}
                 <div className="formgroup">
                     <label htmlFor="name">Book Name: </label>
                     <input type="text" className="form-control" name="title" id="title" value={oneBook.title} onChange={handleChange} />
                 </div>
-                {oneBook.author?.length < 2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : ""}
-                {errors.author ? <p className="text-danger">{errors.author.message}</p> : ""}
+                {oneBook.author?.length < 2 ? <p className="text-danger">FE: Author must be at least 2 characters</p> : null}
+                {errors.author ? <p className="text-danger">{errors.author.message}</p> : null}
                 <div className="formgroup">
                     <label htmlFor="name">Book Author: </label>
                     <input type="text" className="form-control" name="author" id="author" value={oneBook.author} onChange={handleChange} />
