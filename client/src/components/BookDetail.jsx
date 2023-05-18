@@ -61,6 +61,7 @@ const BookDetail = (props) => {
         .catch(err=>console.log(err))
         
     }
+    
     const editBook = (e) => {
         navigate(`/books/${id}/edit`)
     }

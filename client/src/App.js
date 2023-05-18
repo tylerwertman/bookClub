@@ -52,7 +52,7 @@ function App() {
       <ToastContainer transition={Slide}/>
       <Routes>
         <Route path="/" element={<Home />}/>
-        <Route path="/dashboard" element={<Dashboard count={count} setCount={setCount} user={user} darkMode={darkMode}/>}/>
+        <Route path="/dashboard" element={<Dashboard count={count} setCount={setCount} user={user} darkMode={darkMode} welcome={welcome}/>}/>
         <Route path="/login" element={<LoginForm count={count} setCount={setCount} setWelcome={setWelcome} cookieValue={cookieValue} />}/>
         <Route path="/register" element={<RegisterForm count={count} setCount={setCount}/>}/>
         <Route path="/books/:id" element={<BookDetail welcome={welcome} user={user} darkMode={darkMode}/>}/>
