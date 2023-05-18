@@ -50,7 +50,8 @@ const BookDetail = (props) => {
             })
             .catch(err => console.log(err))
 
-    });
+        // eslint-disable-next-line
+    }, []);
 
     const removeBook = () => {
         axios.delete(`http://localhost:8000/api/books/${id}`)
@@ -106,6 +107,7 @@ const BookDetail = (props) => {
             <br />
             <h2>Book Title: {oneBook?.title}</h2>
             <h3>Book Author: {oneBook?.author}</h3>
+            <h4><a href={`https://www.google.com/search?q=${oneBook?.title} by ${oneBook?.author}`} target='_blank' rel="noreferrer">Find this book online</a></h4>
             <h4 style={{ display: "inline" }}>Added by: </h4> {oneBook?.addedBy?.firstName ? <h4 style={{ display: "inline" }}><Link to={`/users/${oneBook?.addedBy?._id}`}>{oneBook?.addedBy?.firstName} {oneBook?.addedBy?.lastName}</Link></h4> : <h4 style={{ display: "inline" }}>Deleted User</h4>}
             <h6>Added on: {new Date(oneBook?.createdAt).toLocaleString()}</h6>
             <h6>Last Updated on: {new Date(oneBook?.updatedAt).toLocaleString()}</h6>

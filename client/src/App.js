@@ -40,7 +40,7 @@ function App() {
       setWelcome("Guest")
     }
     // eslint-disable-next-line
-  }, [count]);
+  }, []);
   const notify = () => toast("🦄You found an easter egg!🦄");
 
   return (

@@ -21,7 +21,9 @@ const Nav = (props) => {
         setDarkMode(darkModeCookie === "true");
         if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)';
         else document.body.style.background = 'white';
-    })
+
+        // eslint-disable-next-line
+    }, [])
 
     const colorToggle = () => {
         const updatedDarkMode = !darkMode;
