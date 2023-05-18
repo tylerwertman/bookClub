@@ -31,7 +31,7 @@ const EditBook = (props) => {
                 setOneBook(res.data.book)
             })
             .catch(err => console.log(err))
-    }, []);
+    });
 
 
     const editBook = (e) => {
@@ -61,8 +61,8 @@ const EditBook = (props) => {
 
 
     return (
-        <div>
-            <h1>Edit a Book</h1>
+        <div className='mt-5'>
+            <h1>Edit Book Details</h1>
             <form action="" className='col-md-6 offset-3' onSubmit={editBook}>
                 {oneBook.title?.length < 2 ? <p className="text-danger">FE: Title must be at least 2 characters</p> : null}
                 {errors.title ? <p className="text-danger">{errors.title.message}</p> : null}

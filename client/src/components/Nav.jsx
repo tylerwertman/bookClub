@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import jwtdecode from 'jwt-decode'
 import Cookies from 'js-cookie'
 
 const Nav = (props) => {
-    const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, setCount, count, darkMode, setDarkMode } = props
+    const { cookieValue, user, setUser, welcome, setWelcome, loggedIn, setLoggedIn, count, darkMode, setDarkMode } = props
     const navigate = useNavigate()
 
     useEffect(() => {
         if (cookieValue) {
             setWelcome(jwtdecode(cookieValue).firstName + " " + jwtdecode(cookieValue).lastName)
         }
-        // const storedDarkMode = Cookies.get('nightMode') === 'true';
+        // eslint-disable-next-line
     }, [count])
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const Nav = (props) => {
         setDarkMode(darkModeCookie === "true");
         if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)';
         else document.body.style.background = 'white';
-    }, [])
+    })
 
     const colorToggle = () => {
         const updatedDarkMode = !darkMode;
@@ -93,7 +93,7 @@ const Nav = (props) => {
                         :
                         <><Link to="/login">Login</Link>&nbsp;<Link to="/register">Register</Link>&nbsp;&nbsp;</>
                 }
-                <button className={darkMode ? "btn btn-primary" : "btn btn-dark"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
+                <button className={darkMode ? "btn btn-success" : "btn btn-dark"} onClick={colorToggle}>{darkMode ? "☀️" : "🌙"}</button>
             </div>
         </nav>
     )

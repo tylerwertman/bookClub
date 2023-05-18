@@ -21,7 +21,7 @@ const Dashboard = (props) => {
         progress: undefined,
         theme: darkMode ? "dark" : "light"
     });
-    const toastFav = (id) => toast.success(`💚 You favorited ${id}`, {
+    const toastFav = (id) => toast.success(`👍 You favorited ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -31,7 +31,7 @@ const Dashboard = (props) => {
         progress: undefined,
         theme: darkMode ? "dark" : "light"
     });
-    const toastUnfav = (id) => toast.error(`🚫 You unfavorited ${id}`, {
+    const toastUnfav = (id) => toast.error(`👎 You unfavorited ${id}`, {
         position: "bottom-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -166,11 +166,11 @@ const Dashboard = (props) => {
                                         <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
                                                 bookList[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
-                                                    ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>🚫</button>&nbsp;&nbsp;</>
-                                                    : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>💚</button>&nbsp;&nbsp;</>
+                                                    ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button>&nbsp;&nbsp;</>
+                                                    : <><button className="btn btn-outline-success" onClick={() => favoriteBook(book)}>★</button>&nbsp;&nbsp;</>
                                             }
                                             { // delete if logged in user or 'admin' email user
-                                                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🗑</button>&nbsp;&nbsp;</> : null
+                                                (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button>&nbsp;&nbsp;</> : null
                                             }
                                         </td>
                                     </tr>

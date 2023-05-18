@@ -88,6 +88,8 @@ const BookDetail = (props) => {
 
     return (
         <div className='mt-5'>
+            <h1>Book Details</h1>
+
             <button className="btn btn-primary" onClick={() => (navigate('/dashboard'))}>Home</button>&nbsp;&nbsp;
             { // fav/unfav
                 bookFavByContainsLoggedInUser

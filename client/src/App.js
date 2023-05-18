@@ -39,13 +39,14 @@ function App() {
     }else{
       setWelcome("Guest")
     }
-  }, []);
-  const notify = () => toast("🦄You really pay attention to detail!🦄");
+    // eslint-disable-next-line
+  }, [count]);
+  const notify = () => toast("🦄You found an easter egg!🦄");
 
   return (
     <div className={darkMode?"AppDark":"AppLight"}>
       <Nav cookieValue={cookieValue} user={user} setUser={setUser} welcome={welcome} setWelcome={setWelcome} loggedIn={loggedIn} setLoggedIn={setLoggedIn} count={count} setCount={setCount} darkMode={darkMode} setDarkMode={setDarkMode}/>
-      <button style={{marginTop:"-40px"}}onClick={notify}>Notify!</button>
+      <button style={{position:"fixed", top:"0"}}onClick={notify}>Notify!</button>
       <ToastContainer transition={Slide}/>
       <Routes>
         <Route path="/" element={<Home />}/>
@@ -59,6 +60,7 @@ function App() {
         <Route path="*" element={<NotFound/>}/>
       </Routes>
       <Footer darkMode={darkMode}/>
+      <button style={{position:"fixed", bottom:"0"}}onClick={notify}>Notify!</button>
     </div>
   );
 }

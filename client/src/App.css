@@ -49,6 +49,7 @@ footer {
   position: fixed;
   bottom: 0%;
   text-align: center;
+  z-index: 100;
 }
 .footerDark {
   background-color: rgb(33,37,41);

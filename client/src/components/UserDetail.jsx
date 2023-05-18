@@ -16,19 +16,16 @@ const UserDetail = (props) => {
                 setOneUser(res.data.user)
             })
             .catch(err => console.log(err))
-
+        // eslint-disable-next-line
     }, [count]);
-    // console.log(oneUser.booksFavorited[0])
 
     const deleteAccount = () => {
         axios.delete(`http://localhost:8000/api/users/${id}`)
             .then(res => {
                 navigate("/")
                 setWelcome("Guest")
-                // setCount(count+1)
                 axios.post('http://localhost:8000/api/users/logout', {}, { withCredentials: true })
                     .then(res => {
-                        // console.log(res.data)
                         navigate('/')
                         setWelcome("Guest")
                         setLoggedIn(false)
@@ -41,7 +38,7 @@ const UserDetail = (props) => {
     }
     return (
         <div className={darkMode ? "mainDivDark mt-5" : "mainDivLight mt-5"}>
-            <h2>User: {oneUser?.firstName} {oneUser?.lastName}</h2>
+            <h2>User Details for: {oneUser?.firstName} {oneUser?.lastName}</h2>
             <div className='flex'>
                 <div className='col-md-3 offset-3'>
                     <h4>Favorite Books:</h4>
@@ -59,6 +56,7 @@ const UserDetail = (props) => {
             <h6>Joined on: {new Date(oneUser?.createdAt).toLocaleString()}</h6>
             <h6>Last updated: {new Date(oneUser?.updatedAt).toLocaleString()}</h6>
             {welcome === (user?.firstName + " " + user?.lastName) ? <button className={darkMode ? "btn btn-danger" : "btn btn-dark"} onClick={deleteAccount}>Delete Account</button> : null}
+            <br /><br /><br /><br />
         </div>
     )
 }
