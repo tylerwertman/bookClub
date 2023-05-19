@@ -58,8 +58,7 @@ const Dashboard = (props) => {
                 setBookList(res.data.book)
             })
             .catch(err => console.log(err))
-        // eslint-disable-next-line
-    }, []);
+    }, [count]);
 
     const changeHandler = (e) => {
         setOneBook({

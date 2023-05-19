@@ -24,9 +24,6 @@ function App() {
   const [user, setUser] = useState()
   const [darkMode, setDarkMode] = useState(false)
 
-  
-  // const [mainDivStyle, setMainDivStyle] = useState("row mainDivLight")
-  // const [formGroupStyle, setFormGroupStyle] = useState("col-md-6 offset-1")
   const cookieValue = Cookies.get('userToken');
   
   useEffect(() => {
@@ -41,6 +38,7 @@ function App() {
     }
     // eslint-disable-next-line
   }, []);
+  
   const notify = () => toast("🦄You found an easter egg!🦄");
 
   return (
