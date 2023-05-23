@@ -11,6 +11,8 @@ const Dashboard = (props) => {
     const [bookList, setBookList] = useState([])
     const [oneBook, setOneBook] = useState({ title: "", author: "" })
     const [errors, setErrors] = useState({})
+    const [sortColumn, setSortColumn] = useState('')
+    const [sortDirection, setSortDirection] = useState('asc')
     const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -117,8 +119,38 @@ const Dashboard = (props) => {
                 toastDelete(book.title)
             })
             .catch(err => console.log(err))
-
     }
+
+    const handleSort = (column) => {
+        if (column === sortColumn) {
+            // If the same column is clicked again, toggle the sort direction
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            // If a different column is clicked, set it as the new sort column and reset the sort direction
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    }
+
+    const sortedBooks = [...bookList].sort((a, b) => {
+        if (sortColumn === 'title') {
+            const titleA = a.title.toLowerCase()
+            const titleB = b.title.toLowerCase()
+            return sortDirection === 'asc' ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA)
+        } else if (sortColumn === 'author') {
+            const authorA = a.author.toLowerCase()
+            const authorB = b.author.toLowerCase()
+            return sortDirection === 'asc' ? authorA.localeCompare(authorB) : authorB.localeCompare(authorA)
+        } else if (sortColumn === 'addedBy') {
+            const addedByA = a.addedBy.firstName.toLowerCase()
+            const addedByB = b.addedBy.firstName.toLowerCase()
+            return sortDirection === 'asc' ? addedByA.localeCompare(addedByB) : addedByB.localeCompare(addedByA)
+        } else if (sortColumn === 'createdAt') {
+            return sortDirection === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
+        }
+        return 0;
+    })
+
     return (
         <div>
             <h1 className='mt-5'>Welcome to the Book Club</h1>
@@ -148,15 +180,15 @@ const Dashboard = (props) => {
                     <table className='mx-auto mb-3'>
                         <thead>
                             <tr>
-                                <th className={darkMode ? "lightText" : null}>Title</th>
-                                <th className={darkMode ? "lightText" : null}>Author</th>
-                                <th className={darkMode ? "lightText" : null}>Added By</th>
-                                <th className={darkMode ? "lightText" : null}>Date</th>
+                                <th className={darkMode ? "lightText" : null} onClick={() => handleSort('title')}>Title {sortDirection === 'asc' && sortColumn === "title" ? "🔼" : sortDirection === 'desc' && sortColumn === "title" ? "🔽" : null}</th>
+                                <th className={darkMode ? "lightText" : null} onClick={() => handleSort('author')}>Author {sortDirection === 'asc' && sortColumn === "author" ? "🔼" : sortDirection === 'desc' && sortColumn === "author" ? "🔽" : null}</th>
+                                <th className={darkMode ? "lightText" : null} onClick={() => handleSort('addedBy')}>Added By {sortDirection === 'asc' && sortColumn === "addedBy" ? "🔼" : sortDirection === 'desc' && sortColumn === "addedBy" ? "🔽" : null}</th>
+                                <th className={darkMode ? "lightText" : null} onClick={() => handleSort('createdAt')}>Date Added {sortDirection === 'asc' && sortColumn === "createdAt" ? "🔼" : sortDirection === 'desc' && sortColumn === "createdAt" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {bookList.map((book, index) => {
+                            {sortedBooks.map((book, index) => {
                                 return (
                                     <tr className="mt-4" key={book._id}>
                                         <td className={darkMode ? "lightText" : null}><><Link to={`/books/${book?._id}`}>{book?.title}</Link></></td>
