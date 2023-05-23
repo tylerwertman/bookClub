@@ -17,7 +17,7 @@ const Nav = (props) => {
 
     useEffect(() => {
         const darkModeCookie = Cookies.get('darkMode');
-        console.log(darkModeCookie, darkMode)
+        // console.log(darkModeCookie, darkMode)
         setDarkMode(darkModeCookie === "true");
         if (darkModeCookie === "true") document.body.style.background = 'rgb(33, 37, 41)';
         else document.body.style.background = 'white';

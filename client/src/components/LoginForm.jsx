@@ -19,6 +19,7 @@ const LoginForm = (props) => {
         })
     }
     const submitHandler = (e) => {
+        console.log("logged in successfully, redirecting to dashboard")
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/login', userInfo, { withCredentials: true })
             .then(res => {
@@ -32,7 +33,6 @@ const LoginForm = (props) => {
                 setErrors({
                     msg: err.response.data.msg
                 })
-                console.log(errors)
             })
     }
     return (

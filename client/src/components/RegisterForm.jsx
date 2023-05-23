@@ -24,6 +24,7 @@ const RegisterForm = (props) => {
     }
 
     const submitHandler = (e) => {
+        console.log("registered successfully, redirecting to dashboard")
         e.preventDefault()
         axios.post('http://localhost:8000/api/users/register', userInfo, { withCredentials: true })
             .then(res => {
@@ -43,7 +44,6 @@ const RegisterForm = (props) => {
                     password: err.response.data.errors.password,
                     confirmPassword: err.response.data.errors.confirmPassword
                 })
-                console.log(errors)
             })
     }
     return (
