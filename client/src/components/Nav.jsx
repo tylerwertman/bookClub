@@ -79,6 +79,7 @@ const Nav = (props) => {
         <nav className={darkMode ? "navDark" : "navLight"}>
             <div>
                 <h1 style={{ display: 'inline' }} onClick={(navHome)}>Book Club</h1>
+                <br className='MQHide' />
                 {
                     welcome !== "Guest" ?
                         <span><h4 style={{ display: 'inline' }}>Welcome, </h4><Link to={`/users/${user?._id}`}>{welcome}</Link></span> :
