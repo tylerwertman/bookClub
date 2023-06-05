@@ -1,12 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import missing from './images/404.png'
 
 const NotFound = () => {
     return (
-        <div>
-            <br /><br /><br />
-            <h1>Uh Oh! No page is found at this URL!</h1>
-            <Link to={`/dashboard/`}>Go Home!</Link>
+        <div style={{ marginTop: "60px" }}>
+            <img alt="404 Not Found" src={missing} />
         </div>
     )
 }

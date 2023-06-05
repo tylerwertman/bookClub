@@ -13,6 +13,8 @@ const Dashboard = (props) => {
     const [errors, setErrors] = useState({})
     const [sortColumn, setSortColumn] = useState('')
     const [sortDirection, setSortDirection] = useState('asc')
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
     const toastAdded = () => toast.success(`➕ You added ${oneBook.title}`, {
         position: "bottom-right",
         autoClose: 2500,
@@ -53,6 +55,16 @@ const Dashboard = (props) => {
         progress: undefined,
         theme: darkMode ? "dark" : "light"
     });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/books`)
@@ -184,7 +196,7 @@ const Dashboard = (props) => {
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('author')}>Author {sortDirection === 'asc' && sortColumn === "author" ? "🔼" : sortDirection === 'desc' && sortColumn === "author" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('addedBy')}>Added By {sortDirection === 'asc' && sortColumn === "addedBy" ? "🔼" : sortDirection === 'desc' && sortColumn === "addedBy" ? "🔽" : null}</th>
                                 <th className={darkMode ? "lightText" : null} onClick={() => handleSort('createdAt')}>Date Added {sortDirection === 'asc' && sortColumn === "createdAt" ? "🔼" : sortDirection === 'desc' && sortColumn === "createdAt" ? "🔽" : null}</th>
-                                <th className={darkMode ? "lightText" : null}>Actions</th>
+                                {windowWidth > "500" ? <th className={darkMode ? "lightText" : null}>Actions</th> : null}
                             </tr>
                         </thead>
                         <tbody>
@@ -195,7 +207,7 @@ const Dashboard = (props) => {
                                         <td className={darkMode ? "lightText" : null}>{book.author}</td>
                                         <td className={darkMode ? "lightText" : null}>{bookList[index]?.addedBy?._id ? <p className='mb-1'><Link to={`/users/${bookList[index]?.addedBy?._id}`}>{book?.addedBy?.firstName} {book?.addedBy?.lastName}</Link></p> : <p>(added by Deleted User)</p>}</td>
                                         <td className={darkMode ? "lightText" : null}>{new Date(book.updatedAt).toLocaleString()}</td>
-                                        <td className={darkMode ? "lightText" : null}>
+                                        {windowWidth > "500" ? <td className={darkMode ? "lightText" : null}>
                                             { // fav/unfav
                                                 bookList[index].favoritedBy.some(bookObj => bookObj._id === user?._id)
                                                     ? <><button className="btn btn-outline-danger" onClick={() => unfavoriteBook(book)}>✩</button>&nbsp;&nbsp;</>
@@ -204,7 +216,7 @@ const Dashboard = (props) => {
                                             { // delete if logged in user or 'admin' email user
                                                 (welcome === (oneBook?.addedBy?.firstName + " " + oneBook?.addedBy?.lastName) || user?.email === "t@w.com") ? <><button className={darkMode ? "btn btn-outline-danger" : "btn btn-outline-dark"} onClick={() => removeBook(book)}>🚮</button>&nbsp;&nbsp;</> : null
                                             }
-                                        </td>
+                                        </td> : null}
                                     </tr>
                                 )
                             })}
