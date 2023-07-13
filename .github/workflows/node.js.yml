@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -26,5 +26,28 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm i
-    - run: npm run build
+    - name: server npm i
+      run: npm i
+    - name: cd client & npm i
+      run: |
+        cd /home/ubuntu/actions-runner/_work/bookClub/bookClub/client
+        npm i
+    - name: cd client & npm run build
+      run: |
+        cd /home/ubuntu/actions-runner/_work/bookClub/bookClub/client
+        npm run build
+    - name: stop nginx
+      run: sudo service nginx stop
+    - name: rm /var/www/html, mv build & grep
+      run: |
+        sudo rm -rf /var/www/html
+        cd /home/ubuntu/actions-runner/_work/bookClub/bookClub/client
+        sudo mv build /var/www/html
+        sudo grep -rl localhost /var/www/html | xargs sed -i 's/http:\/\/localhost:8000//g'
+    - name: copy .env from ~ into server
+      run: cp ~/.env /home/ubuntu/actions-runner/_work/bookClub/bookClub/.env
+    - name: restart pm2 & nginx
+      run: |
+        cd /home/ubuntu/actions-runner/_work/bookClub/bookClub
+        pm2 restart all
+        sudo service nginx restart
